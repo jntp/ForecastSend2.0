@@ -1,6 +1,7 @@
 # main.py is the main python file of ForecastSend2.0 application
 from kivy.app import App
 from kivy.lang import Builder
+from kivy. imp
 from kivy.uix.screenmanager import ScreenManager, Screen
 
 # prompts user to select between "one-day precipitation" or "medium-range update" forecasts
@@ -33,11 +34,11 @@ class WindowManager(ScreenManager):
 kv = Builder.load_file("main.kv") # DON'T FORGET TO CREATE THIS FILE!!!
 
 # builds the kivy application
-class MyMainApp(App):
+class ForecastSendApp(App):
   def build(self):
     return kv
 
 if __name__ == "__main__":
-  MyMainApp().run()
+  ForecastSendApp().run()
 
 
