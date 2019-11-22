@@ -1,7 +1,6 @@
 # main.py is the main python file of ForecastSend2.0 application
 from kivy.app import App
 from kivy.lang import Builder
-from kivy. imp
 from kivy.uix.screenmanager import ScreenManager, Screen
 
 # prompts user to select between "one-day precipitation" or "medium-range update" forecasts

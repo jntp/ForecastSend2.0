@@ -2,13 +2,23 @@ WindowManager:
   HomeWindow:
 
 <HomeWindow>:
-    
+  # Set background color to custom color
+  canvas.before:
+    Color:
+      rgba: 0, 0.3, 0.3, 1
+    Rectangle:
+      pos: self.pos
+      size: self.size
+
   FloatLayout:
     size: root.width, root.height
 
     Label:
       text: "Welcome!"
+      color: 1, 1, 1, 0.9
       size_hint: 0.5, 0.12
       pos_hint: {"x": 0.1, "top": 1}
       font_size: (root.width**2 + root.height**2) / 14**4
+
+ 
 
