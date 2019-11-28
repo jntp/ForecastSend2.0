@@ -12,13 +12,31 @@ WindowManager:
 
   FloatLayout:
     size: root.width, root.height
+    cols: 1
 
     Label:
       text: "Welcome!"
       color: 1, 1, 1, 0.9
       size_hint: 0.5, 0.12
-      pos_hint: {"x": 0.1, "top": 1}
+      pos_hint: {"x": 0.25, "top": 0.85}
+      font_size: (root.width**2 + root.height**2) / 12**4
+
+    Label:
+      text: "What forecast would you like to send?"
+      color: 1, 1, 1, 0.9
+      size_hint: 0.5, 0.12
+      pos_hint: {"x": 0.25, "top": 0.6}
       font_size: (root.width**2 + root.height**2) / 14**4
+
+      FloatLayout:
+        size: root.width, root.height / 2
+        cols: 2
+
+        Button:
+          pos_hint: {"x": 0.1, "top": 0.4}
+          size_hint: 0.3, 0.2
+          font_size: (root.width**2 + root.height**2) / 15**4
+          text: "One-day Precipitation"
 
  
 
