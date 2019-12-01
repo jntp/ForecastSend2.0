@@ -1,7 +1,6 @@
-WindowManager:
-  HomeWindow:
-
 <HomeWindow>:
+  name: "home"
+
   # Set background color to custom color
   canvas.before:
     Color:
@@ -29,14 +28,21 @@ WindowManager:
       font_size: (root.width**2 + root.height**2) / 14**4
 
       FloatLayout:
-        size: root.width, root.height / 2
+        size: root.width, root.height / 1.5 
         cols: 2
 
         Button:
-          pos_hint: {"x": 0.1, "top": 0.4}
+          pos_hint: {"x": 0.15, "top": 0.7}
           size_hint: 0.3, 0.2
-          font_size: (root.width**2 + root.height**2) / 15**4
+          font_size: (root.width**2 + root.height**2) / 16**4
           text: "One-day Precipitation"
+
+        Button:
+          pos_hint: {"x": 0.55, "top": 0.7}
+          size_hint: 0.3, 0.2
+          font_size: (root.width**2 + root.height**2) / 16**4
+          text: "Medium-range Update"
+          # on_release: 
 
  
 

@@ -2,6 +2,7 @@
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.properties import ObjectProperty
 
 # prompts user to select between "one-day precipitation" or "medium-range update" forecasts
 class HomeWindow(Screen):
@@ -30,12 +31,20 @@ class PreviewWindow(Screen):
 class WindowManager(ScreenManager):
   pass
 
-kv = Builder.load_file("main.kv") # DON'T FORGET TO CREATE THIS FILE!!!
+kv = Builder.load_file("main.kv") # load main.kv file
+sm = WindowManager() # load WindowManager upon running
+
+# create screens dictionary that assigns name (ID) to each class
+screens = [HomeWindow(name = "home"), MediumRangeWindow(name = "medium_range")]
+for screen in screens:
+  sm.add_widget(screen)
+
+sm.current = "home" # by default, current screen goes to HomeWindow
 
 # builds the kivy application
 class ForecastSendApp(App):
   def build(self):
-    return kv
+    return sm
 
 if __name__ == "__main__":
   ForecastSendApp().run()
