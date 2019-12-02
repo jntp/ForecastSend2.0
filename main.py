@@ -6,7 +6,13 @@ from kivy.properties import ObjectProperty
 
 # prompts user to select between "one-day precipitation" or "medium-range update" forecasts
 class HomeWindow(Screen):
-  pass
+  # when user clicks "one-day precipitation" button
+  def one_day_precip(self):
+    sm.current = "one_day_main" # switch to one-day precipitation screen
+
+  # when user clicks "medium-range update" button
+  def medium_range(self):
+    sm.current = "medium_range" # switch to medium-range update screen
 
 # prompts user to choose which city or region to send the forecast
 class CityWindow(Screen):
@@ -35,7 +41,7 @@ kv = Builder.load_file("main.kv") # load main.kv file
 sm = WindowManager() # load WindowManager upon running
 
 # create screens dictionary that assigns name (ID) to each class
-screens = [HomeWindow(name = "home"), MediumRangeWindow(name = "medium_range")]
+screens = [HomeWindow(name = "home"), OneDayParameterWindow(name = "one_day_main"), MediumRangeWindow(name = "medium_range")]
 for screen in screens:
   sm.add_widget(screen)
 
