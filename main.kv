@@ -49,6 +49,8 @@
 <MediumRangeWindow>:
   name: "medium_range"
 
+  update: update
+
   # Set background color to custom color
   canvas.before:
     Color:
@@ -67,6 +69,44 @@
       pos_hint: {"x": 0.25, "top": 1}
       font_size: (root.width**2 + root.height**2) / 14**4
 
-    # Don't forget to put a back button
+    TextInput:
+      text: "UPDATE:"
+      id: update 
+      size_hint: 0.7, 0.65
+      pos_hint: {"x": 0.15, "top": 0.88}
+      font_size: (root.width**2 + root.height**2) / 16**4
+
+    Button:
+      pos_hint: {"x": 0.27,"top": 0.2}
+      size_hint: 0.2, 0.1
+      font_size: (root.width**2 + root.height**2) / 15**4
+      text: "BACK"
+      on_release:
+        root.manager.transition.direction = "right"
+        root.back()
+
+    Button:
+      pos_hint: {"x": 0.52, "top": 0.2}
+      size_hint: 0.2, 0.1
+      font_size: (root.width**2 + root.height**2) / 15**4
+      text: "GO"
+      on_release:
+        root.manager.transition.direction = "left"
+        root.go()
+
+<PreviewWindow>:
+  name: "preview"
+
+  # Set background color to custom color
+  canvas.before:
+    Color:
+      rgba: 0, 0.3, 0.3, 1
+    Rectangle:
+      pos: self.pos
+      size: self.size
+
+  FloatLayout:
+    size: root.width, root.height
+
 
 

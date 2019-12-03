@@ -28,7 +28,15 @@ class OneDayEditWindow(Screen):
 
 # medium-range update: main window 
 class MediumRangeWindow(Screen):
-  pass
+  update = ObjectProperty(None)
+
+  # when user clicks the "BACK" button
+  def back(self):
+    sm.current = "home" # go back to home screen
+
+  # when user clicks the "GO" button
+  def go(self):
+    sm.current = "preview" # switch to preview screen
 
 # preview window for both types of forecasts
 class PreviewWindow(Screen):
@@ -41,7 +49,7 @@ kv = Builder.load_file("main.kv") # load main.kv file
 sm = WindowManager() # load WindowManager upon running
 
 # create screens dictionary that assigns name (ID) to each class
-screens = [HomeWindow(name = "home"), OneDayParameterWindow(name = "one_day_main"), MediumRangeWindow(name = "medium_range")]
+screens = [HomeWindow(name = "home"), OneDayParameterWindow(name = "one_day_main"), MediumRangeWindow(name = "medium_range"), PreviewWindow(name = "preview")]
 for screen in screens:
   sm.add_widget(screen)
 
