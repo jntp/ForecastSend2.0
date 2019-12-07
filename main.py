@@ -36,11 +36,17 @@ class MediumRangeWindow(Screen):
 
   # when user clicks the "GO" button
   def go(self):
+    updateText = self.update.text
+    print(self.update.text) # save the text written in the text box
     sm.current = "preview" # switch to preview screen
 
 # preview window for both types of forecasts
 class PreviewWindow(Screen):
-  pass
+  previewText = ObjectProperty(None)
+
+  def on_enter(self, *args):
+    print(updateText)
+    self.previewText.text = updateText
 
 class WindowManager(ScreenManager):
   pass
