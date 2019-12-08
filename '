@@ -113,15 +113,15 @@
     Label:
       text: "Preview"
       color: 1, 1, 1, 0.9
-      size_hint: 0.5, 0.12
+      size_hint: 0.5, 0.5
       pos_hint: {"x": 0.25, "top": 1}
       font_size: (root.width**2 + root.height**2) / 14**4
 
     Label:
       id: previewText
-      text_size: self.size # ensures text is within assigned bounding box
+      text: "Test"
       color: 1, 1, 1, 0.9
-      size_hint: 0.5, 0.5
+      size_hint: 0.5, 0.12
       pos_hint: {"x": 0.25, "top": 0.85}
       font_size: (root.width**2 + root.height**2) / 15**4
 

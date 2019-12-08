@@ -4,6 +4,12 @@ from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import ObjectProperty
 
+# used to store text inputted in text boxes
+class SaveText:
+  # for saving text inputted in the "medium-range update" box
+  def UpdateSave(self, updateText):
+    self.textSave = updateText
+
 # prompts user to select between "one-day precipitation" or "medium-range update" forecasts
 class HomeWindow(Screen):
   # when user clicks "one-day precipitation" button
@@ -36,8 +42,7 @@ class MediumRangeWindow(Screen):
 
   # when user clicks the "GO" button
   def go(self):
-    updateText = self.update.text
-    print(self.update.text) # save the text written in the text box
+    sv.UpdateSave(self.update.text) # save the text written in the text box
     sm.current = "preview" # switch to preview screen
 
 # preview window for both types of forecasts
@@ -45,14 +50,14 @@ class PreviewWindow(Screen):
   previewText = ObjectProperty(None)
 
   def on_enter(self, *args):
-    print(updateText)
-    self.previewText.text = updateText
+    self.previewText.text = sv.textSave
 
 class WindowManager(ScreenManager):
   pass
 
 kv = Builder.load_file("main.kv") # load main.kv file
 sm = WindowManager() # load WindowManager upon running
+sv = SaveText() # access to functions for storing text
 
 # create screens dictionary that assigns name (ID) to each class
 screens = [HomeWindow(name = "home"), OneDayParameterWindow(name = "one_day_main"), MediumRangeWindow(name = "medium_range"), PreviewWindow(name = "preview")]
