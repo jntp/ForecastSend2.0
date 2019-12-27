@@ -3,6 +3,8 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import ObjectProperty
+from kivy.clock import Clock
+
 
 # used to store text inputted in text boxes
 class SaveText:
@@ -35,6 +37,15 @@ class OneDayEditWindow(Screen):
 # medium-range update: main window 
 class MediumRangeWindow(Screen):
   update = ObjectProperty(None)
+  character_count = ObjectProperty(None)
+
+  def on_enter(self):
+    event = Clock.schedule_interval(self.start_count, 1)
+  
+  def start_count(self, dt):
+    print(self.update.text)
+    text = self.update.text
+    self.character_count.bind(text = lambda instance, text: setattr(update, "text", str(len(text))))
 
   # when user clicks the "BACK" button
   def back(self):
@@ -42,6 +53,7 @@ class MediumRangeWindow(Screen):
 
   # when user clicks the "GO" button
   def go(self):
+    event.cancel()
     sv.UpdateSave(self.update.text) # save the text written in the text box
     sm.current = "preview" # switch to preview screen
 
@@ -74,4 +86,4 @@ class ForecastSendApp(App):
 if __name__ == "__main__":
   ForecastSendApp().run()
 
-
+# Stuck on figuring out how to get bind function to work!!!
