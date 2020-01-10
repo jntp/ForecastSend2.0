@@ -108,8 +108,8 @@
       size: self.size
 
   FloatLayout:
-    size: root.width, root.height / 2 
-
+    size: root.width, root.height 
+ 
     Label:
       text: "Preview"
       color: 1, 1, 1, 0.9
@@ -120,12 +120,12 @@
     Label:
       id: previewText
       # text_size: self.size # ensures text is within assigned bounding box
-      text_size: 0.75 * root.width, None
+      text_size: 0.75 * root.width, root.height / 4
       color: 1, 1, 1, 0.9
       size: self.texture_size
       # size_hint: 0.9, 0.3
       # pos_hint: {"x": 0.10, "top": 0.9}
-      pos: 50, 100 
-      font_size: (root.width**2 + root.height**2) / 16**4
-
+      pos: 25, 150 
+      # font_size: (root.width**2 + root.height**2) / 16**4
+      font_size: root.fontsize(self.text, root.height, root.width) # maybe add this
 

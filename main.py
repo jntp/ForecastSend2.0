@@ -54,6 +54,24 @@ class PreviewWindow(Screen):
   def on_enter(self, *args):
     self.previewText.text = sv.textSave
 
+  # TESTING FOR DYNAMICALLY SIZED LABELS
+  def fontsize(self, text, height, width):
+    if len(text) > 320:
+      length = 10
+      print (height)
+    else:
+      length = 0 
+      print(width)
+
+    sp = 16
+    for x in range(1, length):
+      sp -= 1
+
+    # print #sp on font_size
+    return "{}sp".format(sp) 
+
+      
+
 class WindowManager(ScreenManager):
   pass
 
@@ -76,4 +94,4 @@ class ForecastSendApp(App):
 if __name__ == "__main__":
   ForecastSendApp().run()
 
-# Consider making the PreviewText a different row or something in FloatLayout
+# Left off at dynamic labels
