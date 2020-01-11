@@ -1,4 +1,5 @@
 # main.py is the main python file of ForecastSend2.0 application
+import math
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -54,23 +55,19 @@ class PreviewWindow(Screen):
   def on_enter(self, *args):
     self.previewText.text = sv.textSave
 
-  # TESTING FOR DYNAMICALLY SIZED LABELS
+  # Create dynamically sized label for preview text
   def fontsize(self, text, height, width):
-    if len(text) > 320:
-      length = 10
-      print (height)
-    else:
-      length = 0 
-      print(width)
+    dimAvg = (height + width) / 2 # calculate an average dimension size (between width and height)
+    sp = math.ceil(dimAvg * 0.02) # two percent of the screen's dimensions
 
-    sp = 16
-    for x in range(1, length):
-      sp -= 1
+    # For messages larger than 320 characters
+    if len(text) > 320:
+      lenAdjust = len(text) - 160 # offset character count by 160
+      spDrop = math.floor(lenAdjust / 160) # calculate "drop in sp" based on character count
+      sp -= spDrop # initiate "drop in sp"
 
     # print #sp on font_size
     return "{}sp".format(sp) 
-
-      
 
 class WindowManager(ScreenManager):
   pass
