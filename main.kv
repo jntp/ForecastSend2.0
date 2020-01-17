@@ -98,6 +98,7 @@
   name: "preview"
 
   previewText: previewText
+  characterCount: characterCount
 
   # Set background color to custom color
   canvas.before:
@@ -119,13 +120,19 @@
 
     Label:
       id: previewText
-      # text_size: self.size # ensures text is within assigned bounding box
-      text_size: 0.75 * root.width, root.height / 4
+      text_size: 0.75 * root.width, root.height / 4 
+      valign: 'top'
       color: 1, 1, 1, 0.9
       size: self.texture_size
-      # size_hint: 0.9, 0.3
-      # pos_hint: {"x": 0.10, "top": 0.9}
-      pos: 25, 150 
-      # font_size: (root.width**2 + root.height**2) / 16**4
-      font_size: root.fontsize(self.text, root.height, root.width) # maybe add this
+      pos: 15, 150 
+      font_size: root.fontsize(self.text, root.height, root.width) # dynamically sized labels
+
+    Label:
+      id: characterCount
+      text: root.count_characters()
+      color: 1, 1, 1, 0.9
+      size_hint: 0.5, 0.12
+      pos_hint: {"x": 0.5, "top": 0.6}
+      font_size: (root.width**2 + root.height**2) / 17**4
+      markup: True # allows change in style in text 
 

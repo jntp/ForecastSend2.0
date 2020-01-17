@@ -51,6 +51,7 @@ class MediumRangeWindow(Screen):
 # preview window for both types of forecasts
 class PreviewWindow(Screen):
   previewText = ObjectProperty(None)
+  characterCount = ObjectProperty(None)
 
   def on_enter(self, *args):
     self.previewText.text = sv.textSave
@@ -67,7 +68,15 @@ class PreviewWindow(Screen):
       sp -= spDrop # initiate "drop in sp"
 
     # print #sp on font_size
-    return "{}sp".format(sp) 
+    return "{}sp".format(sp)
+
+  def count_characters(self):
+    text_length = len(self.previewText.text)
+    sms_count = math.floor(text_length / 160)
+    info_string = "[b]" + "Character Count: " + str(text_length) + "\n" + "Number of Messages: " + str(sms_count) + "[/b]"
+
+    return info_string
+    
 
 class WindowManager(ScreenManager):
   pass
@@ -91,4 +100,4 @@ class ForecastSendApp(App):
 if __name__ == "__main__":
   ForecastSendApp().run()
 
-# Left off at dynamic labels
+# Left off fixing the count_characters function
