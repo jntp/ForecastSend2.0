@@ -108,6 +108,13 @@
       pos: self.pos
       size: self.size
 
+  canvas:
+    Color:
+      rgba: .1, .1, 1, .9
+    Line:
+      width: 2.
+      rectangle: (self.width / 8, self.height * 0.135, self.width * 0.75, self.height / 4) # format: (pos_x, pos_y, width, height)
+
   FloatLayout:
     size: root.width, root.height 
  
@@ -124,15 +131,22 @@
       valign: 'top'
       color: 1, 1, 1, 0.9
       size: self.texture_size
-      pos: 15, 150 
+      pos_hint: {"x": 0, "top": 1.24} # yeah weird coordinate system I know 
       font_size: root.fontsize(self.text, root.height, root.width) # dynamically sized labels
 
     Label:
       id: characterCount
-      text: root.count_characters()
+      text: 
       color: 1, 1, 1, 0.9
       size_hint: 0.5, 0.12
       pos_hint: {"x": 0.5, "top": 0.6}
       font_size: (root.width**2 + root.height**2) / 17**4
       markup: True # allows change in style in text 
+
+    Label: 
+      text: "Recipients"
+      color: 1, 1, 1, 0.9
+      size_hint: 0.5, 0.12
+      pos_hint: {"x": 0.25, "top": 0.48}
+      font_size: (root.width**2 + root.height**2) / 15**4
 

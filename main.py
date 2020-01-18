@@ -56,8 +56,16 @@ class PreviewWindow(Screen):
   def on_enter(self, *args):
     self.previewText.text = sv.textSave
 
+    text_length = len(self.previewText.text)
+    sms_count = math.ceil(text_length / 160)
+    info_string = "[b]" + "Character Count: " + str(text_length) + "\n" + "Number of Messages: " + str(sms_count) + "[/b]"
+
+    self.characterCount.text = info_string
+
   # Create dynamically sized label for preview text
   def fontsize(self, text, height, width):
+    print("Width: ", width)
+    print("Height: ", height)
     dimAvg = (height + width) / 2 # calculate an average dimension size (between width and height)
     sp = math.ceil(dimAvg * 0.02) # two percent of the screen's dimensions
 
@@ -67,16 +75,12 @@ class PreviewWindow(Screen):
       spDrop = math.floor(lenAdjust / 160) # calculate "drop in sp" based on character count
       sp -= spDrop # initiate "drop in sp"
 
+      # calculate greater "drop in sp" for large messages and large windows (will overlap with the character counter)
+      if spDrop >= 3 and dimAvg > 970:
+        sp -= 1 # drop the font size by another 1 sp if conditions are met
+
     # print #sp on font_size
-    return "{}sp".format(sp)
-
-  def count_characters(self):
-    text_length = len(self.previewText.text)
-    sms_count = math.floor(text_length / 160)
-    info_string = "[b]" + "Character Count: " + str(text_length) + "\n" + "Number of Messages: " + str(sms_count) + "[/b]"
-
-    return info_string
-    
+    return "{}sp".format(sp)    
 
 class WindowManager(ScreenManager):
   pass
@@ -100,4 +104,4 @@ class ForecastSendApp(App):
 if __name__ == "__main__":
   ForecastSendApp().run()
 
-# Left off fixing the count_characters function
+# Left off customizing the rectangle on preview screen
