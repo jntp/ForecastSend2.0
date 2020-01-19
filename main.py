@@ -16,11 +16,11 @@ class SaveText:
 class HomeWindow(Screen):
   # when user clicks "one-day precipitation" button
   def one_day_precip(self):
-    sm.current = "one_day_main" # switch to one-day precipitation screen
+    sm.current = "city" # switch to one-day precipitation screen
 
   # when user clicks "medium-range update" button
   def medium_range(self):
-    sm.current = "medium_range" # switch to medium-range update screen
+    sm.current = "city" # then switch to medium-range update screen
 
 # prompts user to choose which city or region to send the forecast
 class CityWindow(Screen):
@@ -64,8 +64,6 @@ class PreviewWindow(Screen):
 
   # Create dynamically sized label for preview text
   def fontsize(self, text, height, width):
-    print("Width: ", width)
-    print("Height: ", height)
     dimAvg = (height + width) / 2 # calculate an average dimension size (between width and height)
     sp = math.ceil(dimAvg * 0.02) # two percent of the screen's dimensions
 
@@ -90,7 +88,7 @@ sm = WindowManager() # load WindowManager upon running
 sv = SaveText() # access to functions for storing text
 
 # create screens dictionary that assigns name (ID) to each class
-screens = [HomeWindow(name = "home"), OneDayParameterWindow(name = "one_day_main"), MediumRangeWindow(name = "medium_range"), PreviewWindow(name = "preview")]
+screens = [HomeWindow(name = "home"), CityWindow(name = "city"), OneDayParameterWindow(name = "one_day_main"), MediumRangeWindow(name = "medium_range"), PreviewWindow(name = "preview")]
 for screen in screens:
   sm.add_widget(screen)
 
@@ -104,4 +102,5 @@ class ForecastSendApp(App):
 if __name__ == "__main__":
   ForecastSendApp().run()
 
-# Left off customizing the rectangle on preview screen
+# Left off at adding drop down menu (look at documentation)
+# Don't forget to add pop up windows for error messages
