@@ -4,13 +4,17 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import ObjectProperty
-
+from kivy.uix.dropdown import DropDown
+from kivy.uix.button import Button
 
 # used to store text inputted in text boxes
 class SaveText:
   # for saving text inputted in the "medium-range update" box
   def UpdateSave(self, updateText):
     self.textSave = updateText
+
+class CustomDropDown(DropDown):
+  pass
 
 # prompts user to select between "one-day precipitation" or "medium-range update" forecasts
 class HomeWindow(Screen):
@@ -23,8 +27,24 @@ class HomeWindow(Screen):
     sm.current = "city" # then switch to medium-range update screen
 
 # prompts user to choose which city or region to send the forecast
-class CityWindow(Screen):
-  pass
+class CityWindow(Screen):  
+  test = ObjectProperty(None)
+
+  def __init__(self, *args, **kwargs):
+    super(CityWindow, self).__init__(*args, **kwargs)
+    self.drop_down = CustomDropDown()
+
+    dropdown = DropDown() 
+    cities = ["San Francisco/Oakland", "Davis/Sacramento", "Santa Clara Valley", "Los Angeles/Orange County", "San Diego", "New York City"]
+    for city in cities:
+      btn = Button(text = '%r' % city, size_hint_y = None, height = 30) # disable size_hint_y as width of box will be calculated based on size of text
+      btn.bind(on_release = lambda btn : dropdown.select(btn.text))
+      dropdown.add_widget(btn)
+
+    mainbutton = Button(text = 'Select City/Region', size_hint = (None, None))
+    mainbutton.bind(on_release = dropdown.open)
+    dropdown.bind(on_select = lambda instance, x : setattr(mainbutton, 'text', x))
+    self.test.add_widget(mainbutton)
 
 # one-day precipitation: main screen for user entering parameters
 class OneDayParameterWindow(Screen):
@@ -102,5 +122,5 @@ class ForecastSendApp(App):
 if __name__ == "__main__":
   ForecastSendApp().run()
 
-# Left off at adding drop down menu (look at documentation)
+# Fix up the drop down menu
 # Don't forget to add pop up windows for error messages
