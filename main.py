@@ -28,7 +28,7 @@ class HomeWindow(Screen):
 
 # prompts user to choose which city or region to send the forecast
 class CityWindow(Screen):  
-  test = ObjectProperty(None)
+  dropDownList = ObjectProperty(None)
 
   def __init__(self, *args, **kwargs):
     super(CityWindow, self).__init__(*args, **kwargs)
@@ -37,14 +37,15 @@ class CityWindow(Screen):
     dropdown = DropDown() 
     cities = ["San Francisco/Oakland", "Davis/Sacramento", "Santa Clara Valley", "Los Angeles/Orange County", "San Diego", "New York City"]
     for city in cities:
-      btn = Button(text = '%r' % city, size_hint_y = None, height = 30) # disable size_hint_y as width of box will be calculated based on size of text
+      btn = Button(text = '%r' % city, size_hint_y = None, height = 30, pos = (25, 25))
       btn.bind(on_release = lambda btn : dropdown.select(btn.text))
       dropdown.add_widget(btn)
 
-    mainbutton = Button(text = 'Select City/Region', size_hint = (None, None))
+    mainbutton = Button(text = 'Select City/Region', size_hint = (0.5, 0.5))
     mainbutton.bind(on_release = dropdown.open)
     dropdown.bind(on_select = lambda instance, x : setattr(mainbutton, 'text', x))
-    self.test.add_widget(mainbutton)
+    self.dropDownList.add_widget(mainbutton)
+    print(mainbutton.text)
 
 # one-day precipitation: main screen for user entering parameters
 class OneDayParameterWindow(Screen):
@@ -122,5 +123,5 @@ class ForecastSendApp(App):
 if __name__ == "__main__":
   ForecastSendApp().run()
 
-# Fix up the drop down menu
+# Figure out how to store user selection on drop down list
 # Don't forget to add pop up windows for error messages
