@@ -1,3 +1,14 @@
+<PopUps>:
+  Label:
+    text: "Error! You dumb!"
+    size_hint: 0.6, 0.2
+    pos_hint: {"x": 0.2, "top": 1}
+
+  Button:
+    text: "OK"
+    size_hint: 0.8, 0.2
+    pos_hint: {"x": 0.1, "y": 0.1}
+
 <HomeWindow>:
   name: "home"
 
@@ -73,6 +84,24 @@
       id: dropDownList
       size_hint: 0.5, 0.12
       pos_hint: {"x": 0.25, "top": 0.82}
+
+    Button:
+      pos_hint: {"x": 0.27, "top": 0.65}
+      size_hint: 0.2, 0.1
+      font_size: (root.width**2 + root.height**2) / 15**4
+      text: "BACK"
+      on_release:
+        root.manager.transition.direction = "right"
+        root.back()
+
+    Button:
+      pos_hint: {"x": 0.52, "top": 0.65}
+      size_hint: 0.2, 0.1
+      font_size: (root.width**2 + root.height**2) / 15**4
+      text: "GO"
+      on_release:
+        root.manager.transition.direction = "left"
+        root.go()
 
 <MediumRangeWindow>:
   name: "medium_range"
