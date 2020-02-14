@@ -25,12 +25,6 @@ class SaveText:
 class CustomDropDown(DropDown):
   pass
 
-# holds contents of pop up windows
-class PopUps(FloatLayout):
-  def error_popup(self):
-    errorPopup = Popup(title = "ERROR", content = pop, size_hint = (None, None), size = (400, 400))
-    errorPopup.open() # show the popup
-
 # prompts user to select between "one-day precipitation" or "medium-range update" forecasts
 class HomeWindow(Screen):
   # when user clicks "one-day precipitation" button
@@ -71,11 +65,12 @@ class CityWindow(Screen):
 
   # when user clicks the "GO" button
   def go(self):
-    if hasattr(sv,'citySave'):
+    # check if user actually selected a city/region
+    if hasattr(sv,'citySave'): # if user selected anything (if object has attribute) 
       print(sv.citySave)
       sm.current = "medium_range" # switch to medium-range update main screen
     else:
-      pop.error_popup()
+      errorCity() # display error pop up window
 
 # one-day precipitation: main screen for user entering parameters
 class OneDayParameterWindow(Screen):
@@ -96,8 +91,12 @@ class MediumRangeWindow(Screen):
 
   # when user clicks the "GO" button
   def go(self):
-    sv.UpdateSave(self.update.text) # save the text written in the text box
-    sm.current = "preview" # switch to preview screen
+    # check if text box is blank
+    if self.update.text == "":
+      errorMedium() # display error pop up window
+    else:
+      sv.UpdateSave(self.update.text) # save the text written in the text box
+      sm.current = "preview" # switch to preview screen
 
 # preview window for both types of forecasts
 class PreviewWindow(Screen):
@@ -134,10 +133,22 @@ class PreviewWindow(Screen):
 class WindowManager(ScreenManager):
   pass
 
+## Popup Windows for Errors
+
+# for unselected city/region in city window
+def errorCity():
+  errorPopup = Popup(title = "ERROR", content = Label(text = "Error! Please select a city/region."), size_hint = (None, None), size = (400, 400))
+  errorPopup.open() # show the popup
+
+# for blank input box in medium-range update window
+def errorMedium():
+  errorPopup = Popup(title = "ERROR", content = Label(text = "Error! Text box cannot be blank."), size_hint = (None, None), size = (400, 400))
+  errorPopup.open() 
+
+## Class instances
 kv = Builder.load_file("main.kv") # load main.kv file
 sm = WindowManager() # load WindowManager upon running
 sv = SaveText() # access to functions for storing text
-pop = PopUps()
 
 # create screens dictionary that assigns name (ID) to each class
 screens = [HomeWindow(name = "home"), CityWindow(name = "city"), OneDayParameterWindow(name = "one_day_main"), MediumRangeWindow(name = "medium_range"), PreviewWindow(name = "preview")]
@@ -154,5 +165,5 @@ class ForecastSendApp(App):
 if __name__ == "__main__":
   ForecastSendApp().run()
 
-# In process of adding error pop up windows (you need to get the OK button to work)
+# Left off at creating the database and adding to preview window
 # Don't forget to add pop up windows for error messages
