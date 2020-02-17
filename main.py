@@ -10,6 +10,7 @@ from kivy.uix.widget import Widget
 from kivy.uix.label import Label
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.popup import Popup
+from database import DataBase
 
 # used to store text inputted in text boxes
 class SaveText:
@@ -68,6 +69,7 @@ class CityWindow(Screen):
     # check if user actually selected a city/region
     if hasattr(sv,'citySave'): # if user selected anything (if object has attribute) 
       print(sv.citySave)
+      db.get_subscribers('San Francisco/Oakland') # test
       sm.current = "medium_range" # switch to medium-range update main screen
     else:
       errorCity() # display error pop up window
@@ -149,8 +151,9 @@ def errorMedium():
 kv = Builder.load_file("main.kv") # load main.kv file
 sm = WindowManager() # load WindowManager upon running
 sv = SaveText() # access to functions for storing text
+db = DataBase("data.txt")
 
-# create screens dictionary that assigns name (ID) to each class
+# create screens list that assigns name (ID) to each class
 screens = [HomeWindow(name = "home"), CityWindow(name = "city"), OneDayParameterWindow(name = "one_day_main"), MediumRangeWindow(name = "medium_range"), PreviewWindow(name = "preview")]
 for screen in screens:
   sm.add_widget(screen)
@@ -165,5 +168,5 @@ class ForecastSendApp(App):
 if __name__ == "__main__":
   ForecastSendApp().run()
 
-# Left off at creating the database and adding to preview window
+# Left off at bringing the selected lines of the database to the application and adding to preview window
 # Don't forget to add pop up windows for error messages
