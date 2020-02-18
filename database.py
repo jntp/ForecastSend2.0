@@ -8,31 +8,52 @@ class DataBase:
     self.file = None
     self.load()
 
+  # Loads the database
   def load(self):
     self.file = open(self.filename, "r")
     self.subscribers = {} # create dictionary out of users
 
+    # parse each line of the database
     for line in self.file:
       name, city, phone_number = line.strip().split(", ")
-      self.subscribers[name] = (city, phone_number)
+      self.subscribers[name] = (city, phone_number) # create a dictionary containing information of each subscriber
 
     print(self.subscribers)
     self.file.close()
 
+  # Retrieves subscribers based on the selected city or region
   def get_subscribers(self, cityRegion):
     self.cityRegion = cityRegion
-    self.selectedLines = []
-    index = 0
+    self.cityCode = ""
+    self.selectedNames = []
+    self.selectedNumbers = []
 
-    if cityRegion == "San Francisco/Oakland":
-      cityCode = "SF"
+    # Find the respective "city code" for the cityRegion string
+    if "San Francisco/Oakland" in cityRegion:
+      self.cityCode = "SF"
+    elif "Davis/Sacramento" in cityRegion:
+      self.cityCode = "SAC"
+    elif "Santa Clara Valley" in cityRegion:
+      self.cityCode = "SJ" # SJ for San Jose
+    elif "Los Angeles/Orange County" in cityRegion:
+      self.cityCode = "LA"
+    elif "San Diego" in cityRegion:
+      self.cityCode = "SD"
+    elif "New York City" in cityRegion:
+      self.cityCode = "NYC" 
 
+    # Search through the database and retrieve subscribers based on selected city/region
     for name in self.subscribers:
-      if self.subscribers[name][0] == "SF":
+      if self.subscribers[name][0] == self.cityCode: # check if subscriber has matching cityCode
         print(self.subscribers[name])
-        self.selectedLines.append(name + ", " + self.subscribers[name][1] + "\n")
+        # Retrieve the name and number
+        self.selectedNames.append(name)
+        self.selectedNumbers.append(self.subscribers[name][1])
 
-    print(self.selectedLines)
+    print(self.selectedNames)
+    print(self.selectedNumbers)
+
+    self.cityCode = "" # clear the cityCode string in case user presses the back button (avoids appending multiple city codes)
         
 
 

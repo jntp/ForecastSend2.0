@@ -68,8 +68,7 @@ class CityWindow(Screen):
   def go(self):
     # check if user actually selected a city/region
     if hasattr(sv,'citySave'): # if user selected anything (if object has attribute) 
-      print(sv.citySave)
-      db.get_subscribers('San Francisco/Oakland') # test
+      db.get_subscribers(sv.citySave) # call database function to retrieve subscribers with matching city
       sm.current = "medium_range" # switch to medium-range update main screen
     else:
       errorCity() # display error pop up window
@@ -104,6 +103,7 @@ class MediumRangeWindow(Screen):
 class PreviewWindow(Screen):
   previewText = ObjectProperty(None)
   characterCount = ObjectProperty(None)
+  selectedNames = ObjectProperty(None)
 
   def on_enter(self, *args):
     self.previewText.text = sv.textSave
@@ -113,6 +113,10 @@ class PreviewWindow(Screen):
     info_string = "[b]" + "Character Count: " + str(text_length) + "\n" + "Number of Messages: " + str(sms_count) + "[/b]"
 
     self.characterCount.text = info_string
+
+    # Loop through selectedNames and selectedNumbers of the database
+    for index, name in enumerate(db.selectedNames):
+      self.selectedNames.text = self.selectedNames.text + "\n" + db.selectedNames[index] # show in recipient box
 
   # Create dynamically sized label for preview text
   def fontsize(self, text, height, width):
@@ -168,5 +172,5 @@ class ForecastSendApp(App):
 if __name__ == "__main__":
   ForecastSendApp().run()
 
-# Left off at bringing the selected lines of the database to the application and adding to preview window
+# Left off at formating the text in the recipients box of the preview window
 # Don't forget to add pop up windows for error messages
