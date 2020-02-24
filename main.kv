@@ -146,6 +146,7 @@
   previewText: previewText
   characterCount: characterCount
   selectedNames: selectedNames
+  selectedNumbers: selectedNumbers
 
   # Set background color to custom color
   canvas.before:
@@ -200,10 +201,20 @@
     Label:
       id: selectedNames
       text:
+      valign: 'top'
       color: 1, 1, 1, 0.9
-      size_hint: 0.5, 0.3
-      pos_hint: {"x": 0.30, "top": 0.43}
-      font_size: (root.width**2 + root.height**2) / 17**4
+      size: self.texture_size
+      pos_hint: {"x": -0.16, "top": 0.775}
+      font_size: root.recipientFont(self.text, root.height, root.width)
+
+    Label:
+      id: selectedNumbers
+      text:
+      valign: 'top'
+      color: 1, 1, 1, 0.9
+      size: self.texture_size
+      pos_hint: {"x": 0.17, "top": 0.775}
+      font_size: root.recipientFont(self.text, root.height, root.width)
 
 
 

@@ -104,6 +104,7 @@ class PreviewWindow(Screen):
   previewText = ObjectProperty(None)
   characterCount = ObjectProperty(None)
   selectedNames = ObjectProperty(None)
+  selectedNumbers = ObjectProperty(None)
 
   def on_enter(self, *args):
     self.previewText.text = sv.textSave
@@ -117,6 +118,7 @@ class PreviewWindow(Screen):
     # Loop through selectedNames and selectedNumbers of the database
     for index, name in enumerate(db.selectedNames):
       self.selectedNames.text = self.selectedNames.text + "\n" + db.selectedNames[index] # show in recipient box
+      self.selectedNumbers.text = self.selectedNumbers.text + "\n" + db.selectedNumbers[index]
 
   # Create dynamically sized label for preview text
   def fontsize(self, text, height, width):
@@ -134,7 +136,23 @@ class PreviewWindow(Screen):
         sp -= 1 # drop the font size by another 1 sp if conditions are met
 
     # print #sp on font_size
-    return "{}sp".format(sp)    
+    return "{}sp".format(sp)  
+
+  # Create dynamically sized label for recipients' text
+  def recipientFont(self, text, height, width):
+    dimAvg = (height + width) / 2
+    sp = math.ceil(dimAvg * 0.02)
+    count = text.count("\n") # intend to do an sp drop for count >= 7 where dimAvg == 800
+
+    print(dimAvg) # test
+
+    if count >=7:
+      countAdjust = count - 7
+      spDrop = math.floor(countAdjust / 2) # for every two lines, drop the font size by 1 sp
+      sp -= spDrop
+
+    return "{}sp".format(sp)
+
 
 class WindowManager(ScreenManager):
   pass
@@ -172,5 +190,6 @@ class ForecastSendApp(App):
 if __name__ == "__main__":
   ForecastSendApp().run()
 
-# Left off at formating the text in the recipients box of the preview window
+# DOn't forget to add an "ALL" button for Select/City Region 
+# Left off at formating the text in the recipients box of the preview window.. keep in mind window size
 # Don't forget to add pop up windows for error messages
