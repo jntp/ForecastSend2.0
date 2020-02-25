@@ -47,7 +47,7 @@ class CityWindow(Screen):
 
     # create drop down menu of select cities
     dropdown = DropDown() 
-    cities = ["San Francisco/Oakland", "Davis/Sacramento", "Santa Clara Valley", "Los Angeles/Orange County", "San Diego", "New York City"]
+    cities = ["All", "San Francisco/Oakland", "Davis/Sacramento", "Santa Clara Valley", "Los Angeles/Orange County", "San Diego", "New York City"]
     for city in cities:
       # create button individually for each city
       btn = Button(text = '%r' % city, size_hint_y = None, height = 30, pos = (25, 25), on_release = lambda btn : sv.citySelect(btn.text))
@@ -105,6 +105,8 @@ class PreviewWindow(Screen):
   characterCount = ObjectProperty(None)
   selectedNames = ObjectProperty(None)
   selectedNumbers = ObjectProperty(None)
+  selectedNames2 = ObjectProperty(None) # 3rd column of recipients text
+  selectedNumbers2 = ObjectProperty(None) # 4th column of recipients text
 
   def on_enter(self, *args):
     self.previewText.text = sv.textSave
@@ -116,9 +118,18 @@ class PreviewWindow(Screen):
     self.characterCount.text = info_string
 
     # Loop through selectedNames and selectedNumbers of the database
+    columnSplit = math.floor((len(db.selectedNames) - 1) / 2) # list "splits" halfway, allowing recipients to "overflow" to next 2 columns
+
     for index, name in enumerate(db.selectedNames):
-      self.selectedNames.text = self.selectedNames.text + "\n" + db.selectedNames[index] # show in recipient box
-      self.selectedNumbers.text = self.selectedNumbers.text + "\n" + db.selectedNumbers[index]
+      # check if index less than or equal to half the length of selectedNames and selectedNumbers
+      if index <= columnSplit:
+        # onto left 2 columns
+        self.selectedNames.text = self.selectedNames.text + "\n" + db.selectedNames[index] # show in recipient box
+        self.selectedNumbers.text = self.selectedNumbers.text + "\n" + db.selectedNumbers[index]
+      # overflow to the next two columns if number of recipients exceeds 9
+      elif index > columnSplit:
+        self.selectedNames2.text = self.selectedNames2.text + "\n" + db.selectedNames[index]
+        self.selectedNumbers2.text = self.selectedNumbers2.text + "\n" + db.selectedNumbers[index]
 
   # Create dynamically sized label for preview text
   def fontsize(self, text, height, width):
@@ -146,10 +157,30 @@ class PreviewWindow(Screen):
 
     print(dimAvg) # test
 
-    if count >=7:
+    if count >= 7:
       countAdjust = count - 7
-      spDrop = math.floor(countAdjust / 2) # for every two lines, drop the font size by 1 sp
+      spDrop = math.floor(countAdjust / 2) + 1 # for every two lines, drop the font size by 1 sp
       sp -= spDrop
+
+      # drop by another sp if there are 10 or more recipients in one column
+      if count >= 10:
+        sp -= 1 
+
+    # calculate greater "drop in sp" for 9 lines or more and larger windows
+    if count >= 9 and dimAvg >= 750:
+      sp -= 1
+
+      # drop sp again if window is even larger
+      if dimAvg >= 900:
+        sp -= 1
+        
+        # keep dropping the sp
+        if dimAvg >= 1000:
+          sp -= 1
+
+          # drop sp again for larger columns
+          if count >= 10:
+            sp -= 1
 
     return "{}sp".format(sp)
 
@@ -190,6 +221,5 @@ class ForecastSendApp(App):
 if __name__ == "__main__":
   ForecastSendApp().run()
 
-# DOn't forget to add an "ALL" button for Select/City Region 
-# Left off at formating the text in the recipients box of the preview window.. keep in mind window size
+# Next step is to add back & go buttons to preview window. Put a "warning" pop up window asking for confirmation when user clicks on the go button
 # Don't forget to add pop up windows for error messages

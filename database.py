@@ -29,7 +29,9 @@ class DataBase:
     self.selectedNumbers = []
 
     # Find the respective "city code" for the cityRegion string
-    if "San Francisco/Oakland" in cityRegion:
+    if "All" in cityRegion: 
+      self.cityCode = "ALL"
+    elif "San Francisco/Oakland" in cityRegion:
       self.cityCode = "SF"
     elif "Davis/Sacramento" in cityRegion:
       self.cityCode = "SAC"
@@ -44,11 +46,17 @@ class DataBase:
 
     # Search through the database and retrieve subscribers based on selected city/region
     for name in self.subscribers:
-      if self.subscribers[name][0] == self.cityCode: # check if subscriber has matching cityCode
-        print(self.subscribers[name])
-        # Retrieve the name and number
+      # Check if user selected the "All" button
+      if self.cityCode == "ALL":
+        # Retreive the name and number
         self.selectedNames.append(name)
         self.selectedNumbers.append(self.subscribers[name][1])
+      else: # if user selected an actual city or region
+        if self.subscribers[name][0] == self.cityCode: # check if subscriber has matching cityCode
+          print(self.subscribers[name])
+          # Retrieve the name and number
+          self.selectedNames.append(name)
+          self.selectedNumbers.append(self.subscribers[name][1])
 
     print(self.selectedNames)
     print(self.selectedNumbers)
