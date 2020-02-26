@@ -184,6 +184,19 @@ class PreviewWindow(Screen):
 
     return "{}sp".format(sp)
 
+  # when user presses the "BACK" button
+  def back(self):
+    sm.current = "medium_range"
+
+    # Clear the recipients columns to prevent names from stacking onto each other
+    self.selectedNames.text = ""
+    self.selectedNumbers.text = ""
+    self.selectedNames2.text = ""
+    self.selectedNumbers2.text = ""
+
+  # when user presses the "SEND" button
+  def send(self):
+    warnSend()
 
 class WindowManager(ScreenManager):
   pass
@@ -199,6 +212,14 @@ def errorCity():
 def errorMedium():
   errorPopup = Popup(title = "ERROR", content = Label(text = "Error! Text box cannot be blank."), size_hint = (None, None), size = (400, 400))
   errorPopup.open() 
+
+# warning message for sending the forecast
+def warnSend():
+  warnPopup = Popup(title = "WARNING!", content = Label(text = "You are about to send the forecast.\n This action cannot be undone.\n SMS charges will apply.\n Continue?"), \
+       size_hint = (None, None), size = (400, 400))
+  # testButton = Button(text = "TESTING", pos_hint = {"x": 0.2, "top": 0.8}, size_hint = (None, None))
+  warnPopup.bind(content = Button(text = "TESTING", pos_hint = {"x": 0.2, "top": 0.8}, size_hint = (None, None)))
+  warnPopup.open()
 
 ## Class instances
 kv = Builder.load_file("main.kv") # load main.kv file
@@ -221,5 +242,6 @@ class ForecastSendApp(App):
 if __name__ == "__main__":
   ForecastSendApp().run()
 
+# You left off at adding button to warning popup window. See kivy event documentation for details
 # Next step is to add back & go buttons to preview window. Put a "warning" pop up window asking for confirmation when user clicks on the go button
 # Don't forget to add pop up windows for error messages

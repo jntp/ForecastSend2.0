@@ -232,6 +232,25 @@
       pos_hint: {"x": 0.30, "top": 0.775}
       font_size: root.recipientFont(self.text, root.height, root.width)
 
+    Button:
+      pos_hint: {"x": 0.31,"top": 0.12}
+      size_hint: 0.15, 0.08
+      font_size: (root.width**2 + root.height**2) / 16**4
+      text: "BACK"
+      on_release:
+        root.manager.transition.direction = "right"
+        root.back()
+
+    Button:
+      pos_hint: {"x": 0.53,"top": 0.12}
+      size_hint: 0.15, 0.08
+      font_size: (root.width**2 + root.height**2) / 16**4
+      text: "SEND"
+      on_release:
+        # root.manager.transition.direction = "right"
+        root.send()
+
+
 
      
 
