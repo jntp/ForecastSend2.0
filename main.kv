@@ -1,3 +1,4 @@
+# main.kv is the kv file and "decorator" of the ForecastSend2.0 app
 <HomeWindow>:
   name: "home"
 
@@ -250,6 +251,19 @@
         # root.manager.transition.direction = "right"
         root.send()
 
+<SentWindow>:
+  name: "sent"
+
+  # Set background color to custom color
+  canvas.before:
+    Color:
+      rgba: 0, 0.3, 0.3, 1
+    Rectangle:
+      pos: self.pos
+      size: self.size
+
+  FloatLayout:
+    size: root.width, root.height
 
 
      

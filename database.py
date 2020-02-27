@@ -18,7 +18,6 @@ class DataBase:
       name, city, phone_number = line.strip().split(", ")
       self.subscribers[name] = (city, phone_number) # create a dictionary containing information of each subscriber
 
-    print(self.subscribers)
     self.file.close()
 
   # Retrieves subscribers based on the selected city or region
@@ -57,9 +56,6 @@ class DataBase:
           # Retrieve the name and number
           self.selectedNames.append(name)
           self.selectedNumbers.append(self.subscribers[name][1])
-
-    print(self.selectedNames)
-    print(self.selectedNumbers)
 
     self.cityCode = "" # clear the cityCode string in case user presses the back button (avoids appending multiple city codes)
         

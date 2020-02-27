@@ -9,8 +9,10 @@ from kivy.uix.button import Button
 from kivy.uix.widget import Widget
 from kivy.uix.label import Label
 from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from database import DataBase
+from send_SMS import MakeCalls
 
 # used to store text inputted in text boxes
 class SaveText:
@@ -155,8 +157,6 @@ class PreviewWindow(Screen):
     sp = math.ceil(dimAvg * 0.02)
     count = text.count("\n") # intend to do an sp drop for count >= 7 where dimAvg == 800
 
-    print(dimAvg) # test
-
     if count >= 7:
       countAdjust = count - 7
       spDrop = math.floor(countAdjust / 2) + 1 # for every two lines, drop the font size by 1 sp
@@ -196,7 +196,33 @@ class PreviewWindow(Screen):
 
   # when user presses the "SEND" button
   def send(self):
-    warnSend()
+    self.warnSend()
+
+  # warning message for sending the forecast
+  def warnSend(self):
+    # Create box layout to accomodate two buttons and label
+    box = BoxLayout(orientation = 'vertical', padding = (17))
+    box.add_widget(Label(text = "You are about to send the forecast.\n This action cannot be undone.\n SMS charges will apply.\n Continue?"))
+    noButton = Button(text = "NO", pos_hint = {"x": 0.30}, size_hint = (0.4, 0.15))
+    yesButton = Button(text = "YES", pos_hint = {"x": 0.30}, size_hint = (0.4, 0.15))
+    box.add_widget(yesButton)
+    box.add_widget(noButton)
+  
+    # Create pop up
+    warnPopup = Popup(title = "WARNING!", content = box, size_hint = (None, None), size = (400, 400), auto_dismiss = True)
+    yesButton.bind(on_press = self.go) # will send you to the "sent" screen
+    yesButton.bind(on_press = warnPopup.dismiss)
+    noButton.bind(on_press = warnPopup.dismiss) # stay on the preview window
+    warnPopup.open()
+
+  # when user confirms submission of forecast
+  def go(self, instance):
+    mc.makeCall(sv.textSave, db.selectedNumbers, db.selectedNames) # make API Call
+    sm.current = "sent" # switch to sent creen
+
+# screen for when user sends the forecast
+class SentWindow(Screen):
+  pass
 
 class WindowManager(ScreenManager):
   pass
@@ -213,22 +239,16 @@ def errorMedium():
   errorPopup = Popup(title = "ERROR", content = Label(text = "Error! Text box cannot be blank."), size_hint = (None, None), size = (400, 400))
   errorPopup.open() 
 
-# warning message for sending the forecast
-def warnSend():
-  warnPopup = Popup(title = "WARNING!", content = Label(text = "You are about to send the forecast.\n This action cannot be undone.\n SMS charges will apply.\n Continue?"), \
-       size_hint = (None, None), size = (400, 400))
-  # testButton = Button(text = "TESTING", pos_hint = {"x": 0.2, "top": 0.8}, size_hint = (None, None))
-  warnPopup.bind(content = Button(text = "TESTING", pos_hint = {"x": 0.2, "top": 0.8}, size_hint = (None, None)))
-  warnPopup.open()
-
 ## Class instances
 kv = Builder.load_file("main.kv") # load main.kv file
 sm = WindowManager() # load WindowManager upon running
 sv = SaveText() # access to functions for storing text
-db = DataBase("data.txt")
+db = DataBase("data.txt") # load database
+mc = MakeCalls() # allow access to Twilio
 
 # create screens list that assigns name (ID) to each class
-screens = [HomeWindow(name = "home"), CityWindow(name = "city"), OneDayParameterWindow(name = "one_day_main"), MediumRangeWindow(name = "medium_range"), PreviewWindow(name = "preview")]
+screens = [HomeWindow(name = "home"), CityWindow(name = "city"), OneDayParameterWindow(name = "one_day_main"), MediumRangeWindow(name = "medium_range"), \
+    PreviewWindow(name = "preview"), SentWindow(name = "sent")]
 for screen in screens:
   sm.add_widget(screen)
 
@@ -242,6 +262,6 @@ class ForecastSendApp(App):
 if __name__ == "__main__":
   ForecastSendApp().run()
 
-# You left off at adding button to warning popup window. See kivy event documentation for details
-# Next step is to add back & go buttons to preview window. Put a "warning" pop up window asking for confirmation when user clicks on the go button
+# You left off at working on sent window. Also don't forget to test sending forecasts to multiple users.
+# Also don't forget to put an error message IF the forecast does not send
 # Don't forget to add pop up windows for error messages

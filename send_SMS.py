@@ -1,19 +1,23 @@
-# Download the helper library from https://www.twilio.com/docs/python/install
+# send_SMS.py allows the user to make API calls, as in send the forecast to subscribers
+import os
 from twilio.rest import Client
 
-# Your Account Sid and Auth Token from twilio.com/console
-# DANGER! This is insecure. See http://twil.io/secure
-account_sid = 'XXXX'
-auth_token = 'XXXX'
+# Load credentials from environmental variables
+account_sid = os.environ['TWILIO_ACCOUNT_SID']
+auth_token = os.environ['TWILIO_AUTH_TOKEN']
 client = Client(account_sid, auth_token)
 
-message = client.messages \
-  .create(
-    body="DO IT BABY STICK IT BABY MOVE IT BABY LICK IT BABY SUCK UP ON THAT CLIT UNTIL THAT PUSSY GOT A HICKEY, BABY",
-    from_='+17148315677',
-    to='+17143996939'
-  )
-
-print(message.sid)
-
-# Should print character count, preview, and who the message got sent to
+# Make API Call
+class MakeCalls:
+  # Sends forecasts to selected subscribers
+  def makeCall(self, forecast, selectedNumbers, selectedNames):
+    for index, number in enumerate(selectedNumbers):
+      message = client.messages \
+        .create(
+          body = forecast,
+          from_ = '+17148315677',
+          to = number
+        )
+      
+      print(message.sid) 
+      print("Forecast sent to " + selectedNames[index] + " @ " + number + "\n")
