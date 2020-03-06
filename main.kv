@@ -37,6 +37,9 @@
           size_hint: 0.3, 0.2
           font_size: (root.width**2 + root.height**2) / 16**4
           text: "One-day Precipitation"
+          on_release:
+            root.manager.transition.direction = "right"
+            root.one_day_precip() 
 
         Button:
           pos_hint: {"x": 0.55, "top": 0.7}
@@ -264,6 +267,37 @@
 
   FloatLayout:
     size: root.width, root.height
+
+    Label:
+      text: "FORECAST SENT"
+      color: 1, 1, 1, 0.9
+      size_hint: 0.5, 0.12
+      pos_hint: {"x": 0.25, "top": 0.9}
+      font_size: (root.width**2 + root.height**2) / 12**4
+
+    Label:
+      text: "Hooray! You sent a forecast! Now go get a sip of tea."
+      color: 1, 1, 1, 0.9
+      size_hint: 0.5, 0.12
+      pos_hint: {"x": 0.25, "top": 0.75}
+      font_size: (root.width**2 + root.height**2) / 15**4
+
+    Label:
+      text: "[b]OR[/b]"
+      color: 1, 1, 1, 0.9
+      size_hint: 0.5, 0.12
+      pos_hint: {"x": 0.25, "top": 0.65}
+      font_size: (root.width**2 + root.height**2) / 15**4
+      markup: True
+
+    Label:
+      text: "Care to send another forecast?"
+      color: 1, 1, 1, 0.9
+      size_hint: 0.5, 0.12
+      pos_hint: {"x": 0.25, "top": 0.55}
+      font_size: (root.width**2 + root.height**2) / 15**4
+
+      
 
 
      

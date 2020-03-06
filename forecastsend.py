@@ -32,7 +32,7 @@ class CustomDropDown(DropDown):
 class HomeWindow(Screen):
   # when user clicks "one-day precipitation" button
   def one_day_precip(self):
-    sm.current = "sent" # switch to one-day precipitation screen
+    sm.current = "city" # switch to one-day precipitation screen
 
   # when user clicks "medium-range update" button
   def medium_range(self):
@@ -263,6 +263,6 @@ class ForecastSendApp(App):
 if __name__ == "__main__":
   ForecastSendApp().run()
 
-# You left off at working on sent window. Specifically adding 'yes' and 'no' buttons to screen.
+# You left off at working on sent window. Also don't forget to test sending forecasts to multiple users.
 # Also don't forget to put an error message IF the forecast does not send
 # Don't forget to add pop up windows for error messages

@@ -42,6 +42,8 @@ class DataBase:
       self.cityCode = "SD"
     elif "New York City" in cityRegion:
       self.cityCode = "NYC" 
+    elif "Baltimore" in cityRegion:
+      self.cityCode = "BALT"
 
     # Search through the database and retrieve subscribers based on selected city/region
     for name in self.subscribers:
