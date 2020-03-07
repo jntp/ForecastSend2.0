@@ -297,7 +297,26 @@
       pos_hint: {"x": 0.25, "top": 0.55}
       font_size: (root.width**2 + root.height**2) / 15**4
 
-      
+    FloatLayout:
+      size: root.width, root.height / 1.5 
+      cols: 2
+
+      Button:
+        pos_hint: {"x": 0.32, "top": 0.40}
+        size_hint: 0.15, 0.1
+        font_size: (root.width**2 + root.height**2) / 16**4
+        text: "YES"
+        on_release:
+          root.manager.transition.direction = "left"
+          root.yes() 
+  
+      Button:
+        pos_hint: {"x": 0.53, "top": 0.40}
+        size_hint: 0.15, 0.1
+        font_size: (root.width**2 + root.height**2) / 16**4
+        text: "NO"
+        on_release:
+          root.no() # call function to exit the program
 
 
      

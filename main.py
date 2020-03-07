@@ -223,7 +223,13 @@ class PreviewWindow(Screen):
 
 # screen for when user sends the forecast
 class SentWindow(Screen):
-  pass
+  # when user presses the "YES" button
+  def yes(self):
+    sm.current = "home" # go back to home screen 
+
+  # when user presses the "NO" button
+  def no(self):
+    App.get_running_app().stop() # exit the application
 
 class WindowManager(ScreenManager):
   pass
