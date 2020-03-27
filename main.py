@@ -24,6 +24,10 @@ class SaveText:
   def UpdateSave(self, updateText):
     self.textSave = updateText
 
+  # for saving event type inputted in the "one day" drop down menu
+  def eventSave(self, eventText):
+    self.eventType = eventText
+
 # class for drop down menu
 class CustomDropDown(DropDown):
   pass
@@ -32,7 +36,7 @@ class CustomDropDown(DropDown):
 class HomeWindow(Screen):
   # when user clicks "one-day precipitation" button
   def one_day_precip(self):
-    sm.current = "sent" # switch to one-day precipitation screen
+    sm.current = "one_day_main" # switch to one-day precipitation screen
 
   # when user clicks "medium-range update" button
   def medium_range(self):
@@ -78,7 +82,27 @@ class CityWindow(Screen):
 
 # one-day precipitation: main screen for user entering parameters
 class OneDayParameterWindow(Screen):
-  pass
+  dropDownList = ObjectProperty(None)
+
+  def __init__(self, *args, **kwargs):
+    super(OneDayParameterWindow, self).__init__(*args, **kwargs)
+    self.drop_down = CustomDropDown()
+
+    # create drop down menu of select cities
+    dropdown = DropDown() 
+    events = ["Light Rain", "Moderate Rain", "Heavy Rain", "Thunderstorm", "Wintry Mix", "Sleet", "Freezing Rain", "Flurries", "Snow Showers", \
+        "Snow", "Heavy Snow"]
+    for event in events:
+      # create button individually for each city
+      btn = Button(text = '%r' % event, size_hint_y = None, height = 30, pos = (25, 25), on_release = lambda btn : sv.eventSave(btn.text))
+      btn.bind(on_release = lambda btn : dropdown.select(btn.text)) # attach a callback which will pass the text selected as data
+      dropdown.add_widget(btn)
+
+    # create the main or default button
+    mainbutton = Button(text = 'Event Type', size_hint = (0.5, 0.5))
+    mainbutton.bind(on_release = dropdown.open) # show drop down menu when released
+    dropdown.bind(on_select = lambda instance, x : setattr(mainbutton, 'text', x)) # assign data to button text
+    self.dropDownList.add_widget(mainbutton)
 
 # one-day precipitation: for editing the forecast
 class OneDayEditWindow(Screen):
@@ -219,12 +243,22 @@ class PreviewWindow(Screen):
   # when user confirms submission of forecast
   def go(self, instance):
     mc.makeCall(sv.textSave, db.selectedNumbers, db.selectedNames) # make API Call
-    sm.current = "sent" # switch to sent creen
+    sm.current = "sent" # switch to sent screen
+
+    # Clear the recipients text box to prevent names from stacking if user decides to send another forecast
+    self.selectedNames.text = ""
+    self.selectedNumbers.text = ""
+    self.selectedNames2.text = ""
+    self.selectedNumbers2.text = ""
 
 # screen for when user sends the forecast
 class SentWindow(Screen):
   # when user presses the "YES" button
   def yes(self):
+    # clear the selectedNames and selectedNumbers lists
+    db.selectedNames = []
+    db.selectedNumbers = []    
+
     sm.current = "home" # go back to home screen 
 
   # when user presses the "NO" button
@@ -269,6 +303,6 @@ class ForecastSendApp(App):
 if __name__ == "__main__":
   ForecastSendApp().run()
 
-# You left off at working on sent window. Specifically adding 'yes' and 'no' buttons to screen.
+# You left off at making the drop down menu for event type on the one-day window.
 # Also don't forget to put an error message IF the forecast does not send
 # Don't forget to add pop up windows for error messages

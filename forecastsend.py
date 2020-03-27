@@ -219,12 +219,22 @@ class PreviewWindow(Screen):
   # when user confirms submission of forecast
   def go(self, instance):
     mc.makeCall(sv.textSave, db.selectedNumbers, db.selectedNames) # make API Call
-    sm.current = "sent" # switch to sent creen
+    sm.current = "sent" # switch to sent screen
+
+    # Clear the recipients text box to prevent names from stacking if user decides to send another forecast
+    self.selectedNames.text = ""
+    self.selectedNumbers.text = ""
+    self.selectedNames2.text = ""
+    self.selectedNumbers2.text = ""
 
 # screen for when user sends the forecast
 class SentWindow(Screen):
   # when user presses the "YES" button
   def yes(self):
+    # clear the selectedNames and selectedNumbers lists
+    db.selectedNames = []
+    db.selectedNumbers = []    
+
     sm.current = "home" # go back to home screen 
 
   # when user presses the "NO" button

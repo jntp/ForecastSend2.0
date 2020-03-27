@@ -318,6 +318,40 @@
         on_release:
           root.no() # call function to exit the program
 
+<OneDayParameterWindow>:
+  name: "one_day_main"
+
+  dropDownList: dropDownList
+
+  # Set background color to custom color
+  canvas.before:
+    Color:
+      rgba: 0, 0.3, 0.3, 1
+    Rectangle:
+      pos: self.pos
+      size: self.size
+
+  FloatLayout:
+    size: root.width, root.height
+
+    Label:
+      text: "Enter Parameters"
+      color: 1, 1, 1, 0.9
+      size_hint: 0.5, 0.12
+      pos_hint: {"x": 0.25, "top": 1}
+      font_size: (root.width**2 + root.height**2) / 14**4
+
+    Label:
+      text: "Type of event:"
+      color: 1, 1, 1, 0.9
+      size_hint: 0.2, 0.12
+      pos_hint: {"x": 0.08, "top": 0.9}
+      font_size: (root.width**2 + root.height**2) / 15**4
+
+    BoxLayout:
+      id: dropDownList
+      size_hint: 0.2, 0.12
+      pos_hint: {"x": 0.25, "top": 0.9}
 
      
 
