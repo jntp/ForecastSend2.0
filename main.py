@@ -83,6 +83,7 @@ class CityWindow(Screen):
 # one-day precipitation: main screen for user entering parameters
 class OneDayParameterWindow(Screen):
   dropDownList = ObjectProperty(None)
+  pop = ObjectProperty(None)
 
   def __init__(self, *args, **kwargs):
     super(OneDayParameterWindow, self).__init__(*args, **kwargs)
@@ -303,6 +304,6 @@ class ForecastSendApp(App):
 if __name__ == "__main__":
   ForecastSendApp().run()
 
-# You left off at making the drop down menu for event type on the one-day window.
+# You left off setting the character limit for text input. After that, you will want to make the sure the text is saved. Make error messages for incorrect input plz.
 # Also don't forget to put an error message IF the forecast does not send
 # Don't forget to add pop up windows for error messages

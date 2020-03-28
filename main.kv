@@ -322,6 +322,7 @@
   name: "one_day_main"
 
   dropDownList: dropDownList
+  pop: pop
 
   # Set background color to custom color
   canvas.before:
@@ -351,9 +352,32 @@
     BoxLayout:
       id: dropDownList
       size_hint: 0.2, 0.12
-      pos_hint: {"x": 0.25, "top": 0.9}
+      pos_hint: {"x": 0.39, "top": 0.93}
 
-     
+    Label:
+      text: "Probability of Precipitation (PoP):"
+      halign: 'left'
+      color: 1, 1, 1, 0.9
+      size_hint: 0.4, 0.12
+      pos_hint: {"x": 0.08, "top": 0.8}
+      font_size: (root.width**2 + root.height**2) / 15**4
+  
+    TextInput:
+      text: 
+      id: pop 
+      size_hint: 0.05, 0.05
+      pos_hint: {"x": 0.55, "top": 0.76}
+      font_size: self.height / 2 
+      multiline: False
+
+    Label:
+      text: "%"
+      halign: 'right'
+      color: 1, 1, 1, 0.9
+      size_hint: 0.05, 0.12
+      pos_hint: {"x": 0.59, "top": 0.795}
+      font_size: (root.width**2 + root.height**2) / 15**4
+    
 
 
 
