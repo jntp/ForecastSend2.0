@@ -13,6 +13,8 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from database import DataBase
 from send_SMS import MakeCalls
+from kivy.uix.textinput import TextInput
+from kivy.properties import NumericProperty
 
 # used to store text inputted in text boxes
 class SaveText:
@@ -304,6 +306,7 @@ class ForecastSendApp(App):
 if __name__ == "__main__":
   ForecastSendApp().run()
 
+# You left off at testing Bubble for error messages
 # You left off setting the character limit for text input. After that, you will want to make the sure the text is saved. Make error messages for incorrect input plz.
 # Also don't forget to put an error message IF the forecast does not send
 # Don't forget to add pop up windows for error messages
