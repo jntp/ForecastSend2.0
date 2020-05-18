@@ -2,6 +2,7 @@
   name: "home"
 
   intLabel: intLabel
+  errorIntLabel: errorIntLabel
 
   FloatLayout: 
     size: root.width, root.height
@@ -13,5 +14,14 @@
       pos_hint: {"x": 0.55, "top": 0.76}
       font_size: self.height / 2
       multiline: False
+
+    Label:
+      text:
+      id: errorIntLabel
+      color: 0, 0.9, 0.6, 0.9 # red 
+      size_hint: 0.4, 0.12
+      pos_hint: {"x": 0.45, "top": 0.72}
+      font_size: (root.width**2 + root.height**2) / 16**4
+
 
 

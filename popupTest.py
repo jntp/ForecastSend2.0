@@ -25,15 +25,29 @@ FloatInput:
 
 class HomeWindow(Screen):
   intLabel = ObjectProperty(None)
+  errorIntLabel = ObjectProperty(None)
 
   def __init__(self, **kwargs):
     self.intLabel.bind(text = self.validate)
 
-  def validate
+  def validate(self, input, value, min_value = 0, max_value = 3):
+    try:
+      print(min_value, max_value) # test
+      status = float(min_value) <= float(value) <= float(max_value)
+    except Exception as e:
+      print("OOPS!") 
+      self.errorIntLabel.text = "WTF"
 
 
 class WindowManager(ScreenManager):
   pass
+
+
+## Popup Windows
+
+# def excessChar()
+  # excessChar = Popup(title = "ERROR", content = Label(text = "Error! No more than 2 characters allowed."), size_hint = (None, None), size = (400, 400))
+  # excessChar.open() 
 
 sm = WindowManager()
 kv = Builder.load_file("popupTest.kv")
@@ -51,4 +65,4 @@ class TestApp(App):
 if __name__ == "__main__":
   TestApp().run() 
 
-# You left off writing validate function? How will the popups appear? 
+# Try keyboard_on_key_down()... look at Kivy Docs for TextInput!!!! 
