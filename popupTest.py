@@ -27,9 +27,6 @@ class HomeWindow(Screen):
   intLabel = ObjectProperty(None)
   errorIntLabel = ObjectProperty(None)
 
-  def __init__(self, **kwargs):
-    self.intLabel.bind(text = self.validate)
-
   def validate(self, input, value, min_value = 0, max_value = 3):
     try:
       print(min_value, max_value) # test
@@ -38,6 +35,14 @@ class HomeWindow(Screen):
       print("OOPS!") 
       self.errorIntLabel.text = "WTF"
 
+  def testLol(self,  min_value, max_value):
+    print("TESTING WORKED!!!")
+
+    if self.errorIntLabel.text == "":
+      self.errorIntLabel.text = "Enter a value between " + str(min_value) + " and " + str(max_value) + "." 
+      firstTime = False
+    else:
+      print("LOLITA!")
 
 class WindowManager(ScreenManager):
   pass
@@ -65,4 +70,4 @@ class TestApp(App):
 if __name__ == "__main__":
   TestApp().run() 
 
-# Try keyboard_on_key_down()... look at Kivy Docs for TextInput!!!! 
+# Getting somewhere... finish testLol function 
