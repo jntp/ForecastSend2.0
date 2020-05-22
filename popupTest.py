@@ -35,15 +35,28 @@ class HomeWindow(Screen):
       print("OOPS!") 
       self.errorIntLabel.text = "WTF"
 
-  def testLol(self,  min_value, max_value):
+  def testLol(self, min_value, max_value):
+    value = self.intLabel.text 
     print("TESTING WORKED!!!")
+    print(value) 
 
-    if self.errorIntLabel.text == "":
-      self.errorIntLabel.text = "Enter a value between " + str(min_value) + " and " + str(max_value) + "." 
-      firstTime = False
-    else:
-      print("LOLITA!")
+    if self.intLabel.text == "":
+      self.errorIntLabel.text = "Please enter a value between " + str(min_value) + " and " + str(max_value) + "." 
+    else: 
+      try:
+        status = int(min_value) <= int(value) <= int(max_value)
+      except:
+        self.errorIntLabel.text = "Error! Please enter a number."
 
+      remainder = int(value) % 10
+
+      if remainder is 0 and status is True:
+        self.errorIntLabel.text = ""
+      elif remainder is not 0 and status is True:
+        self.errorIntLabel.text = "Error! Please enter a number divisible by 10."
+      elif remainder is 0 and status is False:
+        self.errorIntLabel.text = "Error! Number must be between 30 and 100."
+        
 class WindowManager(ScreenManager):
   pass
 
