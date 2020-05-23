@@ -37,26 +37,28 @@ class HomeWindow(Screen):
 
   def testLol(self, min_value, max_value):
     value = self.intLabel.text 
-    print("TESTING WORKED!!!")
-    print(value) 
 
     if self.intLabel.text == "":
-      self.errorIntLabel.text = "Please enter a value between " + str(min_value) + " and " + str(max_value) + "." 
+      self.errorIntLabel.color = (0, 0.9, 0.5, 0.9) # green
+      self.errorIntLabel.text = "Please enter an integer between " + str(min_value) + " and " + str(max_value) + "." 
     else: 
+      # check if user entered an integer
       try:
         status = int(min_value) <= int(value) <= int(max_value)
       except:
-        self.errorIntLabel.text = "Error! Please enter a number."
+        self.errorIntLabel.color = (1, 0.1, 0.1, 0.9) # red
+        self.errorIntLabel.text = "Error! Please enter an integer."
+      else:
+        remainder = int(value) % 10
+        self.errorIntLabel.color = (1, 0.1, 0.1, 0.9) # red
 
-      remainder = int(value) % 10
-
-      if remainder is 0 and status is True:
-        self.errorIntLabel.text = ""
-      elif remainder is not 0 and status is True:
-        self.errorIntLabel.text = "Error! Please enter a number divisible by 10."
-      elif remainder is 0 and status is False:
-        self.errorIntLabel.text = "Error! Number must be between 30 and 100."
-        
+        if remainder is 0 and status is True:
+          self.errorIntLabel.text = ""
+        elif status is False: # Check if number is within bounds FIRST before checking divisibility 
+          self.errorIntLabel.text = "Error! Integer must be between 30 and 100."
+        elif remainder is not 0 and status is True:
+          self.errorIntLabel.text = "Error! Please enter a integer divisible by 10."
+                 
 class WindowManager(ScreenManager):
   pass
 
