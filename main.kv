@@ -323,6 +323,7 @@
 
   dropDownList: dropDownList
   pop: pop
+  popMessage: popMessage
 
   # Set background color to custom color
   canvas.before:
@@ -369,6 +370,8 @@
       pos_hint: {"x": 0.55, "top": 0.76}
       font_size: self.height / 2 
       multiline: False
+      on_focus:
+        root.popMessages(30, 100)
 
     Label:
       text: "%"
@@ -377,6 +380,15 @@
       size_hint: 0.05, 0.12
       pos_hint: {"x": 0.59, "top": 0.795}
       font_size: (root.width**2 + root.height**2) / 15**4
+
+    Label:
+      text:
+      id: popMessage
+      color:
+      size_hint: 0.4, 0.12
+      pos_hint: {"x": 0.39, "top": 0.74}
+      font_size: (root.width**2 + root.height**2) / 16**4
+
     
 
 

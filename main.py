@@ -1,5 +1,6 @@
 # main.py is the main python file of ForecastSend2.0 application
 import math
+import numpy
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -30,6 +31,23 @@ class SaveText:
   def eventSave(self, eventText):
     self.eventType = eventText
 
+# used to store "global variables and functions"
+class Globals:
+  # "recalls" if user wanted to send a one-day forecast
+  def oneDay(self, checkIt):
+    if checkIt:
+      self.oneDayBool = True
+    else:
+      self.oneDayBool = False
+
+  # keeps track of all the "good responses" in the one-day window 
+  def oneGoodResponse(self):
+    if tally not in locals():
+      tally = 0
+    else: 
+      tally += 1 # add to tally whenever a good response is recorded, will be used to keep track of all good responses
+      print("Tally: ", tally)
+
 # class for drop down menu
 class CustomDropDown(DropDown):
   pass
@@ -39,10 +57,12 @@ class HomeWindow(Screen):
   # when user clicks "one-day precipitation" button
   def one_day_precip(self):
     sm.current = "one_day_main" # switch to one-day precipitation screen
+    gb.oneDay(True) # set oneDayBool equal to True
 
   # when user clicks "medium-range update" button
   def medium_range(self):
     sm.current = "city" # then switch to medium-range update screen
+    gb.oneDay(False) # set oneDayBool equal to False
 
 # prompts user to choose which city or region to send the forecast
 class CityWindow(Screen):  
@@ -69,6 +89,9 @@ class CityWindow(Screen):
     dropdown.bind(on_select = lambda instance, x : setattr(mainbutton, 'text', x)) # assign data to button text
     self.dropDownList.add_widget(mainbutton)
 
+  # def on_enter(self, *args):
+   #  gb.oneDayError()
+
   # when user clicks the "BACK" button
   def back(self):
     sm.current = "home" # go back to home screen
@@ -86,6 +109,7 @@ class CityWindow(Screen):
 class OneDayParameterWindow(Screen):
   dropDownList = ObjectProperty(None)
   pop = ObjectProperty(None)
+  popMessage = ObjectProperty(None) 
 
   def __init__(self, *args, **kwargs):
     super(OneDayParameterWindow, self).__init__(*args, **kwargs)
@@ -106,6 +130,33 @@ class OneDayParameterWindow(Screen):
     mainbutton.bind(on_release = dropdown.open) # show drop down menu when released
     dropdown.bind(on_select = lambda instance, x : setattr(mainbutton, 'text', x)) # assign data to button text
     self.dropDownList.add_widget(mainbutton)
+
+  def popMessages(self, min_value, max_value):
+    value = self.pop.text
+
+    # check user is focusing on textinput for the first time
+    if self.pop.text == "":
+      self.popMessage.color = (0, 0.9, 0.5, 0.9) # initiate green text
+      self.popMessage.text = "Please enter an integer between " + str(min_value) + " and " + str(max_value) + "."
+    else: 
+      # check if user entered an integer
+      try:
+        status = int(min_value) <= int(value) <= int(max_value)
+      except:
+        # display error message
+        self.popMessage.color = (1, 0.1, 0.1, 0.9) # change label color to red
+        self.popMessage.text = "Error! Please enter an integer."
+      else:
+        remainder = int(value) % 10 # check if input is divisible by 10
+        self.popMessage.color = (1, 0.1, 0.1, 0.9) # change label color to red
+
+        # check if input is "correct"
+        if remainder is 0 and status is True: # correct input
+          self.popMessage.text = "" # "erase" label
+        elif status is False: # check if number is within bounds FIRST before checking divisibility
+          self.popMessage.text = "Error! Integer must be between 30 and 100."
+        elif remainder is not 0 and status is True: # for input not divisible by 10
+          self.popMessage.text = "Error! Please enter an integer divisible by 10."
 
 # one-day precipitation: for editing the forecast
 class OneDayEditWindow(Screen):
@@ -287,6 +338,7 @@ def errorMedium():
 kv = Builder.load_file("main.kv") # load main.kv file
 sm = WindowManager() # load WindowManager upon running
 sv = SaveText() # access to functions for storing text
+gb = Globals() # access to "global variables and functions" 
 db = DataBase("data.txt") # load database
 mc = MakeCalls() # allow access to Twilio
 
@@ -306,7 +358,6 @@ class ForecastSendApp(App):
 if __name__ == "__main__":
   ForecastSendApp().run()
 
-# You left off at testing Bubble for error messages
-# You left off setting the character limit for text input. After that, you will want to make the sure the text is saved. Make error messages for incorrect input plz.
+# You left off at using numpy to create bool array (dtype=bool) and use it to keep track of all correct responses
 # Also don't forget to put an error message IF the forecast does not send
 # Don't forget to add pop up windows for error messages
