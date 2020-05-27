@@ -41,12 +41,8 @@ class Globals:
       self.oneDayBool = False
 
   # keeps track of all the "good responses" in the one-day window 
-  def oneGoodResponse(self):
-    if tally not in locals():
-      tally = 0
-    else: 
-      tally += 1 # add to tally whenever a good response is recorded, will be used to keep track of all good responses
-      print("Tally: ", tally)
+  def oneGoodResponses(self):
+    self.oneTracker = numpy.zeros(2, dtype = bool) 
 
 # class for drop down menu
 class CustomDropDown(DropDown):
@@ -89,9 +85,6 @@ class CityWindow(Screen):
     dropdown.bind(on_select = lambda instance, x : setattr(mainbutton, 'text', x)) # assign data to button text
     self.dropDownList.add_widget(mainbutton)
 
-  # def on_enter(self, *args):
-   #  gb.oneDayError()
-
   # when user clicks the "BACK" button
   def back(self):
     sm.current = "home" # go back to home screen
@@ -131,8 +124,12 @@ class OneDayParameterWindow(Screen):
     dropdown.bind(on_select = lambda instance, x : setattr(mainbutton, 'text', x)) # assign data to button text
     self.dropDownList.add_widget(mainbutton)
 
+  def on_enter(self, *args):
+    gb.oneGoodResponses()
+
   def popMessages(self, min_value, max_value):
     value = self.pop.text
+    gb.oneTracker[0] = False # automatically assume false and thus "bad" response 
 
     # check user is focusing on textinput for the first time
     if self.pop.text == "":
@@ -153,6 +150,8 @@ class OneDayParameterWindow(Screen):
         # check if input is "correct"
         if remainder is 0 and status is True: # correct input
           self.popMessage.text = "" # "erase" label
+          gb.oneTracker[0] = True # set response to "good" 
+          print("True?", gb.oneTracker) 
         elif status is False: # check if number is within bounds FIRST before checking divisibility
           self.popMessage.text = "Error! Integer must be between 30 and 100."
         elif remainder is not 0 and status is True: # for input not divisible by 10
@@ -358,6 +357,6 @@ class ForecastSendApp(App):
 if __name__ == "__main__":
   ForecastSendApp().run()
 
-# You left off at using numpy to create bool array (dtype=bool) and use it to keep track of all correct responses
+# You left off at High/Low Temps, and the different scenarios to display it
 # Also don't forget to put an error message IF the forecast does not send
 # Don't forget to add pop up windows for error messages
