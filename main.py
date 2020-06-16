@@ -52,17 +52,19 @@ class CustomDropDown(DropDown):
 class HomeWindow(Screen):
   # when user clicks "one-day precipitation" button
   def one_day_precip(self):
-    sm.current = "one_day_main" # switch to one-day precipitation screen
+    sm.current = "city" # switch to city selection screen
     gb.oneDay(True) # set oneDayBool equal to True
 
   # when user clicks "medium-range update" button
   def medium_range(self):
-    sm.current = "city" # then switch to medium-range update screen
+    sm.current = "city" # then switch to city selection screen
     gb.oneDay(False) # set oneDayBool equal to False
 
 # prompts user to choose which city or region to send the forecast
 class CityWindow(Screen):  
   dropDownList = ObjectProperty(None)
+  backButton = ObjectProperty(None)
+  goButton = ObjectProperty(None) 
   cityString = "Select city/region"
 
   def __init__(self, *args, **kwargs):
@@ -83,18 +85,28 @@ class CityWindow(Screen):
     mainbutton = Button(text = 'Select city/region', size_hint = (0.5, 0.5))
     mainbutton.bind(on_release = dropdown.open) # show drop down menu when released
     dropdown.bind(on_select = lambda instance, x : setattr(mainbutton, 'text', x)) # assign data to button text
-    self.dropDownList.add_widget(mainbutton)
+    self.dropDownList.add_widget(mainbutton) 
 
   # when user clicks the "BACK" button
   def back(self):
+    # clear the selectedNames and selectedNumbers lists to prevent names/numbers from stacking up
+    db.selectedNames = []
+    db.selectedNumbers = []    
+
     sm.current = "home" # go back to home screen
 
   # when user clicks the "GO" button
   def go(self):
     # check if user actually selected a city/region
-    if hasattr(sv,'citySave'): # if user selected anything (if object has attribute) 
+    if hasattr(sv,'citySave'): # if user selected anything (if object has attribute)
       db.get_subscribers(sv.citySave) # call database function to retrieve subscribers with matching city
-      sm.current = "medium_range" # switch to medium-range update main screen
+
+      # Check if user selected a one-day or medium-range forecast 
+      if gb.oneDayBool is True: 
+        sm.current = "one_day_main" # switch one-day main screen
+      else:
+        sm.current = "medium_range" # switch to medium-range update main screen
+
     else:
       errorCity() # display error pop up window
 
@@ -103,6 +115,7 @@ class OneDayParameterWindow(Screen):
   dropDownList = ObjectProperty(None)
   pop = ObjectProperty(None)
   popMessage = ObjectProperty(None) 
+  tempOne = ObjectProperty(None)
 
   def __init__(self, *args, **kwargs):
     super(OneDayParameterWindow, self).__init__(*args, **kwargs)
