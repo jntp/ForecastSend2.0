@@ -103,7 +103,11 @@ class CityWindow(Screen):
 
       # Check if user selected a one-day or medium-range forecast 
       if gb.oneDayBool is True: 
-        sm.current = "one_day_main" # switch one-day main screen
+        # check if user selected "all"; this would output an error
+        if "All" in sv.citySave:
+          errorAll() # display pop up error message
+        else: # success
+          sm.current = "one_day_main" # switch one-day main screen
       else:
         sm.current = "medium_range" # switch to medium-range update main screen
 
@@ -137,8 +141,16 @@ class OneDayParameterWindow(Screen):
     dropdown.bind(on_select = lambda instance, x : setattr(mainbutton, 'text', x)) # assign data to button text
     self.dropDownList.add_widget(mainbutton)
 
-  def on_enter(self, *args):
+  def on_pre_enter(self, *args):
     gb.oneGoodResponses()
+
+    # Test
+    if "single-city" in db.cityType:
+      self.tempOne.text = "High:"
+    elif "double-city" in db.cityType:
+      self.tempOne.text = "High-High:"
+    elif "region" in db.cityType:
+      self.tempOne.text = "High/Low:"
 
   def popMessages(self, min_value, max_value):
     value = self.pop.text
@@ -344,7 +356,13 @@ def errorCity():
 # for blank input box in medium-range update window
 def errorMedium():
   errorPopup = Popup(title = "ERROR", content = Label(text = "Error! Text box cannot be blank."), size_hint = (None, None), size = (400, 400))
-  errorPopup.open() 
+  errorPopup.open()
+
+# for selecting "ALL" in city window when user specifies "one-day" forecast
+def errorAll():
+  errorPopup = Popup(title = "ERROR", content = Label(text = "Error! One cannot select *All* when \nsending a one-day precipitation forecast."), \
+      size_hint = (None, None), size = (400, 400))
+  errorPopup.open()
 
 ## Class instances
 kv = Builder.load_file("main.kv") # load main.kv file
@@ -370,6 +388,7 @@ class ForecastSendApp(App):
 if __name__ == "__main__":
   ForecastSendApp().run()
 
+# You left off on figuring out how to get the text to change depending on city selection! 
 # You left off at High/Low Temps, and the different scenarios to display it
 # Also don't forget to put an error message IF the forecast does not send
 # Don't forget to add pop up windows for error messages

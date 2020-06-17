@@ -24,26 +24,35 @@ class DataBase:
   def get_subscribers(self, cityRegion):
     self.cityRegion = cityRegion
     self.cityCode = ""
+    self.cityType = "" # used for one-day forecast, will affect display
     self.selectedNames = []
     self.selectedNumbers = []
 
     # Find the respective "city code" for the cityRegion string
     if "All" in cityRegion: 
       self.cityCode = "ALL"
+      self.cityType = "all"
     elif "San Francisco/Oakland" in cityRegion:
       self.cityCode = "SF"
+      self.cityType = "double-city"
     elif "Davis/Sacramento" in cityRegion:
       self.cityCode = "SAC"
+      self.cityType = "single-city"
     elif "Santa Clara Valley" in cityRegion:
       self.cityCode = "SJ" # SJ for San Jose
+      self.cityType = "single-city"
     elif "Los Angeles/Orange County" in cityRegion:
       self.cityCode = "LA"
+      self.cityType = "region"
     elif "San Diego" in cityRegion:
       self.cityCode = "SD"
+      self.cityType = "region"
     elif "New York City" in cityRegion:
       self.cityCode = "NYC" 
+      self.cityType = "single-city"
     elif "Baltimore" in cityRegion:
       self.cityCode = "BALT"
+      self.cityType = "single-city" 
 
     # Search through the database and retrieve subscribers based on selected city/region
     for name in self.subscribers:
@@ -60,7 +69,7 @@ class DataBase:
           self.selectedNumbers.append(self.subscribers[name][1])
 
     self.cityCode = "" # clear the cityCode string in case user presses the back button (avoids appending multiple city codes)
-        
+    self.cityType = ""    
 
 
 
