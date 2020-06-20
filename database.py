@@ -68,8 +68,7 @@ class DataBase:
           self.selectedNames.append(name)
           self.selectedNumbers.append(self.subscribers[name][1])
 
-    self.cityCode = "" # clear the cityCode string in case user presses the back button (avoids appending multiple city codes)
-    self.cityType = ""    
+    self.cityCode = "" # clear the cityCode string in case user presses the back button (avoids appending multiple city codes)   
 
 
 

@@ -119,6 +119,7 @@ class OneDayParameterWindow(Screen):
   dropDownList = ObjectProperty(None)
   pop = ObjectProperty(None)
   popMessage = ObjectProperty(None) 
+  placeOne = ObjectProperty(None)
   tempOne = ObjectProperty(None)
 
   def __init__(self, *args, **kwargs):
@@ -143,12 +144,16 @@ class OneDayParameterWindow(Screen):
 
   def on_pre_enter(self, *args):
     gb.oneGoodResponses()
+    print(db.cityType)
 
     # Test
     if "single-city" in db.cityType:
+      self.placeOne.text = "[i]San Francisco[/i]"
       self.tempOne.text = "High:"
     elif "double-city" in db.cityType:
-      self.tempOne.text = "High-High:"
+      self.placeOne.text = "[i]Oakland[/i]"
+      self.tempOne.text = "High:"
+      print("Testing!") 
     elif "region" in db.cityType:
       self.tempOne.text = "High/Low:"
 
@@ -387,8 +392,7 @@ class ForecastSendApp(App):
 
 if __name__ == "__main__":
   ForecastSendApp().run()
-
-# You left off on figuring out how to get the text to change depending on city selection! 
+ 
 # You left off at High/Low Temps, and the different scenarios to display it
 # Also don't forget to put an error message IF the forecast does not send
 # Don't forget to add pop up windows for error messages

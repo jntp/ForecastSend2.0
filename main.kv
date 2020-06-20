@@ -328,7 +328,10 @@
   dropDownList: dropDownList
   pop: pop
   popMessage: popMessage
+  placeOne: placeOne
   tempOne: tempOne
+  tempTwo: tempTwo
+  boxOne: boxOne
 
   # Set background color to custom color
   canvas.before:
@@ -395,11 +398,42 @@
       font_size: (root.width**2 + root.height**2) / 16**4
 
     Label:
+      text: 
+      id: placeOne
+      text_size: self.size
+      halign: 'left'
+      valign: 'center'
+      markup: True
+      color: 1, 1, 1, 0.9
+      size_hint: 0.2, 0.12
+      pos_hint: {"x": 0.105, "top": 0.68}
+      font_size: (root.width**2 + root.height**2) / 15**4
+
+    Label:
       text: "High:"
       id: tempOne
+      text_size: self.size
+      halign: 'left'
+      valign: 'center'
       color: 1, 1, 1, 0.9
-      size_hint: 0.4, 0.12
-      pos_hint: {"x": 0.08, "top": 0.70}
+      size_hint: 0.1, 0.12
+      pos_hint: {"x": 0.28, "top": 0.68}
+      font_size: (root.width**2 + root.height**2) / 15**4
+
+    TextInput:
+      text: 
+      id: boxOne 
+      size_hint: 0.08, 0.05
+      pos_hint: {"x": 0.43, "top": 0.64}
+      font_size: self.height / 2 
+      multiline: False
+
+    Label:
+      text: "Low:"
+      id: tempTwo
+      color: 1, 1, 1, 0.9
+      size_hint: 0.1, 0.12
+      pos_hint: {"x": 0.58, "top": 0.68}
       font_size: (root.width**2 + root.height**2) / 15**4
 
     
