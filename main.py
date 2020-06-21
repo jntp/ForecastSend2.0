@@ -120,7 +120,11 @@ class OneDayParameterWindow(Screen):
   pop = ObjectProperty(None)
   popMessage = ObjectProperty(None) 
   placeOne = ObjectProperty(None)
+  placeTwo = ObjectProperty(None) 
   tempOne = ObjectProperty(None)
+  tempTwo = ObjectProperty(None)
+  boxOne = ObjectProperty(None)
+  boxTwo = ObjectProperty(None)
 
   def __init__(self, *args, **kwargs):
     super(OneDayParameterWindow, self).__init__(*args, **kwargs)
@@ -148,14 +152,24 @@ class OneDayParameterWindow(Screen):
 
     # Test
     if "single-city" in db.cityType:
-      self.placeOne.text = "[i]San Francisco[/i]"
+      self.placeOne.text = "[i]Davis/Sacramento[/i]"
       self.tempOne.text = "High:"
     elif "double-city" in db.cityType:
-      self.placeOne.text = "[i]Oakland[/i]"
+      self.placeOne.text = "[i]San Francisco[/i]"
+      self.placeTwo.text = "[i]Oakland[/i]"
       self.tempOne.text = "High:"
       print("Testing!") 
     elif "region" in db.cityType:
+      self.placeOne.text = "[i]Los Angeles[/i]"
       self.tempOne.text = "High/Low:"
+      self.tempTwo.text = "High/Low:" 
+      self.boxOne.size_hint_x = 0.15
+      self.boxTwo.size_hint_x = 0.15
+
+  def back(self):
+    ## Note you may need to write a function for the "restoration of default"
+    # restore or ensure attributes are at "default" 
+    self.boxOne.size_hint_x = 0.08
 
   def popMessages(self, min_value, max_value):
     value = self.pop.text
@@ -393,6 +407,7 @@ class ForecastSendApp(App):
 if __name__ == "__main__":
   ForecastSendApp().run()
  
+# Figure out how to NOT display boxThree and boxFour 
 # You left off at High/Low Temps, and the different scenarios to display it
 # Also don't forget to put an error message IF the forecast does not send
 # Don't forget to add pop up windows for error messages
