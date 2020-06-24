@@ -332,9 +332,14 @@
   placeTwo: placeTwo
   tempOne: tempOne
   tempTwo: tempTwo
+  tempThree: tempThree
+  tempFour: tempFour
   boxOne: boxOne
   boxTwo: boxTwo
   boxThree: boxThree
+  boxFour: boxFour
+  # testLayout: testLayout
+  # floatTest: floatTest
 
   # Set background color to custom color
   canvas.before:
@@ -344,7 +349,8 @@
       pos: self.pos
       size: self.size
 
-  FloatLayout:
+  FloatLayout: 
+    id: floatTest
     size: root.width, root.height
 
     Label:
@@ -462,11 +468,41 @@
       pos_hint: {"x": 0.105, "top": 0.56}
       font_size: (root.width**2 + root.height**2) / 15**4
 
+    Label:
+      text:
+      id: tempThree 
+      text_size: self.size
+      halign: 'left'
+      valign: 'center' 
+      color: 1, 1, 1, 0.9
+      size_hint: 0.15, 0.12
+      pos_hint: {"x": 0.32, "top": 0.56}
+      font_size: (root.width**2 + root.height**2) / 15**4
+
     TextInput:
       text: 
       id: boxThree 
       size_hint: 0.08, 0.05 # default is x = 0.08, y = 0.05
-      pos_hint: {"x": 0.44, "top": 0.52}
+      pos_hint: {"x": -0.44, "top": 0.52}
+      font_size: self.height / 2 
+      multiline: False
+
+    Label:
+      text:
+      id: tempFour 
+      text_size: self.size
+      halign: 'left'
+      valign: 'center' 
+      color: 1, 1, 1, 0.9
+      size_hint: 0.15, 0.12
+      pos_hint: {"x": 0.62, "top": 0.56}
+      font_size: (root.width**2 + root.height**2) / 15**4
+
+    TextInput:
+      text: 
+      id: boxFour
+      size_hint: 0.08, 0.05 # default is x = 0.08, y = 0.05
+      pos_hint: {"x": -0.74, "top": 0.52}
       font_size: self.height / 2 
       multiline: False
 

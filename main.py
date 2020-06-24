@@ -123,8 +123,14 @@ class OneDayParameterWindow(Screen):
   placeTwo = ObjectProperty(None) 
   tempOne = ObjectProperty(None)
   tempTwo = ObjectProperty(None)
+  tempThree = ObjectProperty(None) 
+  tempFour = ObjectProperty(None) 
   boxOne = ObjectProperty(None)
   boxTwo = ObjectProperty(None)
+  boxThree = ObjectProperty(None) 
+  boxFour = ObjectProperty(None) 
+  testLayout = ObjectProperty(None)
+  floatTest = ObjectProperty(None) 
 
   def __init__(self, *args, **kwargs):
     super(OneDayParameterWindow, self).__init__(*args, **kwargs)
@@ -149,15 +155,25 @@ class OneDayParameterWindow(Screen):
   def on_pre_enter(self, *args):
     gb.oneGoodResponses()
     print(db.cityType)
+    cityInPrint = db.cityRegion[1:-1] # cut the quotations off the beginning and end of the string 
 
     # Test
     if "single-city" in db.cityType:
-      self.placeOne.text = "[i]Davis/Sacramento[/i]"
+      self.placeOne.text = "[i]" + cityInPrint + "[/i]"
       self.tempOne.text = "High:"
+      self.tempTwo.text = "Low:" 
     elif "double-city" in db.cityType:
-      self.placeOne.text = "[i]San Francisco[/i]"
-      self.placeTwo.text = "[i]Oakland[/i]"
-      self.tempOne.text = "High:"
+      # Partition the cityInPrint string into two cities
+      cityOne, cityTwo = cityInPrint.split("/")
+
+      # Bring boxThree and boxFour to life
+      self.boxThree.pos_hint["x"] = 0.44
+      self.boxFour.pos_hint["x"] = 0.74
+
+      self.placeOne.text = "[i]" + cityOne + "[i]"
+      self.placeTwo.text = "[i]" + cityTwo + "[i]" 
+      self.tempThree.text = "High:"
+      self.tempFour.text = "Low:" 
       print("Testing!") 
     elif "region" in db.cityType:
       self.placeOne.text = "[i]Los Angeles[/i]"
@@ -165,6 +181,9 @@ class OneDayParameterWindow(Screen):
       self.tempTwo.text = "High/Low:" 
       self.boxOne.size_hint_x = 0.15
       self.boxTwo.size_hint_x = 0.15
+
+      # test = TextInput(font_size = "15sp", multiline = False)
+      # self.testLayout.add_widget(test)
 
   def back(self):
     ## Note you may need to write a function for the "restoration of default"
@@ -406,8 +425,9 @@ class ForecastSendApp(App):
 
 if __name__ == "__main__":
   ForecastSendApp().run()
- 
-# Figure out how to NOT display boxThree and boxFour 
+
+# You left off at working on the region scenario 
+# Don't forget later when you add the back button to the one-day screen, you will need to "reset" the positions of the attributes!!!
 # You left off at High/Low Temps, and the different scenarios to display it
 # Also don't forget to put an error message IF the forecast does not send
 # Don't forget to add pop up windows for error messages
