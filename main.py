@@ -128,9 +128,11 @@ class OneDayParameterWindow(Screen):
   boxOne = ObjectProperty(None)
   boxTwo = ObjectProperty(None)
   boxThree = ObjectProperty(None) 
-  boxFour = ObjectProperty(None) 
-  testLayout = ObjectProperty(None)
-  floatTest = ObjectProperty(None) 
+  boxFour = ObjectProperty(None)  
+  unitOne = ObjectProperty(None)
+  unitTwo = ObjectProperty(None)
+  unitThree = ObjectProperty(None)
+  unitFour = ObjectProperty(None)
 
   def __init__(self, *args, **kwargs):
     super(OneDayParameterWindow, self).__init__(*args, **kwargs)
@@ -154,10 +156,9 @@ class OneDayParameterWindow(Screen):
 
   def on_pre_enter(self, *args):
     gb.oneGoodResponses()
-    print(db.cityType)
     cityInPrint = db.cityRegion[1:-1] # cut the quotations off the beginning and end of the string 
 
-    # Test
+    # Display the temperature labels and boxes according to the scenario 
     if "single-city" in db.cityType:
       self.placeOne.text = "[i]" + cityInPrint + "[/i]"
       self.tempOne.text = "High:"
@@ -170,20 +171,39 @@ class OneDayParameterWindow(Screen):
       self.boxThree.pos_hint["x"] = 0.44
       self.boxFour.pos_hint["x"] = 0.74
 
+      # Customize display of cities
       self.placeOne.text = "[i]" + cityOne + "[i]"
-      self.placeTwo.text = "[i]" + cityTwo + "[i]" 
+      self.placeTwo.text = "[i]" + cityTwo + "[i]"
+
+      # Add labels for the 2nd line
       self.tempThree.text = "High:"
       self.tempFour.text = "Low:" 
-      print("Testing!") 
+      self.unitThree.text = "F"
+      self.unitFour.text = "F"
     elif "region" in db.cityType:
-      self.placeOne.text = "[i]Los Angeles[/i]"
-      self.tempOne.text = "High/Low:"
-      self.tempTwo.text = "High/Low:" 
-      self.boxOne.size_hint_x = 0.15
-      self.boxTwo.size_hint_x = 0.15
+      # Only display boxOne and boxThree 
+      self.boxTwo.pos_hint["x"] = -0.74 # hide boxTwo
+      self.boxThree.pos_hint["x"] = 0.44 # show boxThree 
 
-      # test = TextInput(font_size = "15sp", multiline = False)
-      # self.testLayout.add_widget(test)
+      # Change box sizes to accomodate extra text
+      self.boxOne.size_hint_x = 0.15
+      self.boxThree.size_hint_x = 0.15
+
+      # Change the text accordingly 
+      self.tempOne.text = "High/Low:"
+      self.tempThree.text = "High/Low:"
+      self.tempTwo.text = "" # remove tempTwo
+      self.unitTwo.text = "" # remove unitTwo
+      self.unitThree.text = "F" # display unitThree 
+      
+      # Change positions of "unit" text (fahrenheit, celsius)
+      self.unitOne.pos_hint["x"] = 0.6
+      self.unitThree.pos_hint["x"] = 0.6
+
+      # City display will look different per region
+      if "Los Angeles/Orange County" or "San Diego" in cityInPrint:
+        self.placeOne.text = "[i]Coast[/i]"
+        self.placeTwo.text = "[i]Valley[/i]" 
 
   def back(self):
     ## Note you may need to write a function for the "restoration of default"

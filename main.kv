@@ -338,8 +338,10 @@
   boxTwo: boxTwo
   boxThree: boxThree
   boxFour: boxFour
-  # testLayout: testLayout
-  # floatTest: floatTest
+  unitOne: unitOne 
+  unitTwo: unitTwo
+  unitThree: unitThree
+  unitFour: unitFour 
 
   # Set background color to custom color
   canvas.before:
@@ -392,7 +394,6 @@
 
     Label:
       text: "%"
-      halign: 'right'
       color: 1, 1, 1, 0.9
       size_hint: 0.05, 0.12
       pos_hint: {"x": 0.59, "top": 0.795}
@@ -438,6 +439,17 @@
       multiline: False
 
     Label:
+      text: "F"
+      id: unitOne
+      text_size: self.size
+      halign: 'left'
+      valign: 'center'
+      color: 1, 1, 1, 0.9
+      size_hint: 0.05, 0.12
+      pos_hint: {"x": 0.53, "top": 0.675} # long box is x = 0.6
+      font_size: (root.width**2 + root.height**2) / 15**4
+
+    Label:
       text: "Low:"
       id: tempTwo
       text_size: self.size
@@ -455,6 +467,17 @@
       pos_hint: {"x": 0.74, "top": 0.64}
       font_size: self.height / 2 
       multiline: False
+
+    Label:
+      text: "F"
+      id: unitTwo
+      text_size: self.size
+      halign: 'left'
+      valign: 'center'
+      color: 1, 1, 1, 0.9
+      size_hint: 0.05, 0.12
+      pos_hint: {"x": 0.83, "top": 0.675} # long box is x = 0.9
+      font_size: (root.width**2 + root.height**2) / 15**4
 
     Label:
       text: 
@@ -488,6 +511,17 @@
       multiline: False
 
     Label:
+      text: 
+      id: unitThree
+      text_size: self.size
+      halign: 'left'
+      valign: 'center'
+      color: 1, 1, 1, 0.9
+      size_hint: 0.05, 0.12
+      pos_hint: {"x": 0.53, "top": 0.555} 
+      font_size: (root.width**2 + root.height**2) / 15**4
+
+    Label:
       text:
       id: tempFour 
       text_size: self.size
@@ -506,8 +540,18 @@
       font_size: self.height / 2 
       multiline: False
 
+    Label:
+      text: 
+      id: unitFour 
+      text_size: self.size
+      halign: 'left'
+      valign: 'center'
+      color: 1, 1, 1, 0.9
+      size_hint: 0.05, 0.12
+      pos_hint: {"x": 0.83, "top": 0.555} 
+      font_size: (root.width**2 + root.height**2) / 15**4
+
 
     
 
-
-
+ 
