@@ -42,7 +42,7 @@ class Globals:
 
   # keeps track of all the "good responses" in the one-day window 
   def oneGoodResponses(self):
-    self.oneTracker = numpy.zeros(2, dtype = bool) 
+    self.oneTracker = numpy.zeros(5, dtype = bool) 
 
 # class for drop down menu
 class CustomDropDown(DropDown):
@@ -133,6 +133,7 @@ class OneDayParameterWindow(Screen):
   unitTwo = ObjectProperty(None)
   unitThree = ObjectProperty(None)
   unitFour = ObjectProperty(None)
+  tempMessageOne = ObjectProperty(None) 
 
   def __init__(self, *args, **kwargs):
     super(OneDayParameterWindow, self).__init__(*args, **kwargs)
@@ -214,7 +215,7 @@ class OneDayParameterWindow(Screen):
     value = self.pop.text
     gb.oneTracker[0] = False # automatically assume false and thus "bad" response 
 
-    # check user is focusing on textinput for the first time
+    # check if user is focusing on textinput for the first time
     if self.pop.text == "":
       self.popMessage.color = (0, 0.9, 0.5, 0.9) # initiate green text
       self.popMessage.text = "Please enter an integer between " + str(min_value) + " and " + str(max_value) + "."
@@ -239,6 +240,38 @@ class OneDayParameterWindow(Screen):
           self.popMessage.text = "Error! Integer must be between 30 and 100."
         elif remainder is not 0 and status is True: # for input not divisible by 10
           self.popMessage.text = "Error! Please enter an integer divisible by 10."
+
+  def tempMessages(self, orderRank):
+    gb.oneTracker[orderRank] = False 
+    value = ""  
+    tempType = self.convertTempType(orderRank) 
+    
+    if orderRank == 1:
+      value = self.boxOne.text
+    elif orderRank == 2:
+      value = self.boxTwo.text
+      tempType = "Low" 
+    elif orderRank == 3:
+      value = self.boxThree.text
+    elif orderRank == 4:
+      value = self.boxFour.text
+
+    # check if user is focusing on textinput for the first time
+    if value == "":
+      self.popMessage.color = (0, 0.9, 0.5, 0.9) # initiate green text
+      self.popMessage.text = "Please enter an appropriate " + tempType + " temperature."
+    # YOU LEFT OFF HERE! 
+
+  def convertTempType(self, orderRank):
+    if orderRank == 1 or orderRank == 3:
+      if "region" in db.cityType:
+        finalString = "High/Low"
+      else:
+        finalString = "High"
+    elif orderRank == 2 or orderRank == 4:
+      finalString = "Low" 
+
+    return finalString 
 
 # one-day precipitation: for editing the forecast
 class OneDayEditWindow(Screen):
@@ -446,7 +479,7 @@ class ForecastSendApp(App):
 if __name__ == "__main__":
   ForecastSendApp().run()
 
-# You left off at working on the region scenario 
+# You left off at temperature messages.  
 # Don't forget later when you add the back button to the one-day screen, you will need to "reset" the positions of the attributes!!!
 # You left off at High/Low Temps, and the different scenarios to display it
 # Also don't forget to put an error message IF the forecast does not send
