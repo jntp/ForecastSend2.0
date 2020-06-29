@@ -22,7 +22,7 @@ class SaveText:
   # for saving text selected in the "city window" drop down menu 
   def citySelect(self, cityText):
     self.citySave = cityText
-
+  
   # for saving text inputted in the "medium-range update" box
   def UpdateSave(self, updateText):
     self.textSave = updateText
@@ -200,7 +200,7 @@ class OneDayParameterWindow(Screen):
       # Change positions of "unit" text (fahrenheit, celsius)
       self.unitOne.pos_hint["x"] = 0.6
       self.unitThree.pos_hint["x"] = 0.6
-
+  
       # City display will look different per region
       if "Los Angeles/Orange County" or "San Diego" in cityInPrint:
         self.placeOne.text = "[i]Coast[/i]"
@@ -243,25 +243,47 @@ class OneDayParameterWindow(Screen):
 
   def tempMessages(self, orderRank):
     gb.oneTracker[orderRank] = False 
-    value = ""  
+    value = self.boxNumber(orderRank)  
     tempType = self.convertTempType(orderRank) 
-    
-    if orderRank == 1:
-      value = self.boxOne.text
-    elif orderRank == 2:
-      value = self.boxTwo.text
-      tempType = "Low" 
-    elif orderRank == 3:
-      value = self.boxThree.text
-    elif orderRank == 4:
-      value = self.boxFour.text
+    tempMessage = ""
+    tempColor = ListProperty([])
 
     # check if user is focusing on textinput for the first time
     if value == "":
-      self.popMessage.color = (0, 0.9, 0.5, 0.9) # initiate green text
-      self.popMessage.text = "Please enter an appropriate " + tempType + " temperature."
-    # YOU LEFT OFF HERE! 
+      tempColor = (0, 0.9, 0.5, 0.9) # initiate green text
+      tempMessage = "Please enter an appropriate " + tempType + " temperature."
 
+    if "region" not in db.cityType:
+      try:
+        status = -100 <= int(value) <= 150
+      except:
+        # display error message
+        tempColor = (1, 0.1, 0.1, 0.9) # red text 
+        tempMessage = "Error! Please enter an integer."
+      else:
+        tempMessage = ""
+        gb.oneTracker[OrderRank] = True
+    else:
+      # YOU LEFT OFF HERE FOR PARSING OF REGIONAL TEXTS
+
+    # Change the text color and message accordingly with the "orderRank" 
+    if orderRank == 1 or orderRank == 2:
+      self.tempMessageOne.color = tempColor
+      self.tempMessageOne.text = tempMessage
+    elif orderRank == 3 or orderRank == 4:
+      self.tempMessageTwo.color = tempColor
+      self.tempmessageTwo.text = tempMessage 
+     
+  def boxNumber(self, orderRank):
+    if orderRank == 1:
+      return self.boxOne.text
+    elif orderRank == 2:
+      return self.boxTwo.text 
+    elif orderRank == 3:
+      return self.boxThree.text
+    elif orderRank == 4:
+      return self.boxFour.text
+  
   def convertTempType(self, orderRank):
     if orderRank == 1 or orderRank == 3:
       if "region" in db.cityType:
