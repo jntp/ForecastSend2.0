@@ -16,6 +16,7 @@ from database import DataBase
 from send_SMS import MakeCalls
 from kivy.uix.textinput import TextInput
 from kivy.properties import NumericProperty
+from kivy.properties import ListProperty 
 
 # used to store text inputted in text boxes
 class SaveText:
@@ -134,6 +135,7 @@ class OneDayParameterWindow(Screen):
   unitThree = ObjectProperty(None)
   unitFour = ObjectProperty(None)
   tempMessageOne = ObjectProperty(None) 
+  tempMessageTwo = ObjectProperty(None) 
 
   def __init__(self, *args, **kwargs):
     super(OneDayParameterWindow, self).__init__(*args, **kwargs)
@@ -240,7 +242,8 @@ class OneDayParameterWindow(Screen):
           self.popMessage.text = "Error! Integer must be between 30 and 100."
         elif remainder is not 0 and status is True: # for input not divisible by 10
           self.popMessage.text = "Error! Please enter an integer divisible by 10."
-
+  
+  # Test
   def tempMessages(self, orderRank):
     gb.oneTracker[orderRank] = False 
     value = self.boxNumber(orderRank)  
@@ -251,8 +254,9 @@ class OneDayParameterWindow(Screen):
     # check if user is focusing on textinput for the first time
     if value == "":
       tempColor = (0, 0.9, 0.5, 0.9) # initiate green text
-      tempMessage = "Please enter an appropriate " + tempType + " temperature."
+      tempMessage = "Please enter an appropriate " + tempType + " temperature in degrees Fahrenheit.")
 
+    # check to see if not a regional forecast 
     if "region" not in db.cityType:
       try:
         status = -100 <= int(value) <= 150
@@ -260,11 +264,27 @@ class OneDayParameterWindow(Screen):
         # display error message
         tempColor = (1, 0.1, 0.1, 0.9) # red text 
         tempMessage = "Error! Please enter an integer."
+        print("Temp Color: ", tempColor)
       else:
         tempMessage = ""
-        gb.oneTracker[OrderRank] = True
+        gb.oneTracker[orderRank] = True
     else:
-      # YOU LEFT OFF HERE FOR PARSING OF REGIONAL TEXTS
+      # parse the input and check for validity
+      try:
+        high, low = value.split("/")
+        highLower, highUpper = high.split("-")
+        lowLower, lowUpper = low.split("-")
+        temperatures = [highLower, highUpper, lowLower, lowUpper] 
+
+        # check for integer
+        for temperature in temperatures:
+          status = -100 <= int(temperatures[temperature]) <= 150
+      except:
+        tempColor = (1, 0.1, 0.1, 0.9) # red text
+        tempMessage = "Error! Input must be in the format ##-##/##-## (e.g. 56-61/45-51)." 
+      else:
+        tempMessage = ""
+        gb.oneTracker[orderRank] = True 
 
     # Change the text color and message accordingly with the "orderRank" 
     if orderRank == 1 or orderRank == 2:
@@ -501,7 +521,7 @@ class ForecastSendApp(App):
 if __name__ == "__main__":
   ForecastSendApp().run()
 
-# You left off at temperature messages.  
+# You left off at debugging temperature messages. Check the logic of your code.   
 # Don't forget later when you add the back button to the one-day screen, you will need to "reset" the positions of the attributes!!!
 # You left off at High/Low Temps, and the different scenarios to display it
 # Also don't forget to put an error message IF the forecast does not send
