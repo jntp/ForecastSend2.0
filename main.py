@@ -249,20 +249,20 @@ class OneDayParameterWindow(Screen):
     value = self.boxNumber(orderRank)  
     tempType = self.convertTempType(orderRank) 
     tempMessage = ""
-    tempColor = ListProperty([])
+    tempColor = []
+
+    print("Value: ", value)
 
     # check if user is focusing on textinput for the first time
     if value == "":
-      tempColor = (0, 0.9, 0.5, 0.9) # initiate green text
-      tempMessage = "Please enter an appropriate " + tempType + " temperature in degrees Fahrenheit.")
-
-    # check to see if not a regional forecast 
-    if "region" not in db.cityType:
+      tempColor = [0, 0.9, 0.5, 0.9] # initiate green text
+      tempMessage = "Please enter an appropriate " + tempType + " temperature in degrees Fahrenheit."
+    elif "region" not in db.cityType: # check to see if not a regional forecast 
       try:
         status = -100 <= int(value) <= 150
       except:
         # display error message
-        tempColor = (1, 0.1, 0.1, 0.9) # red text 
+        tempColor = [1, 0.1, 0.1, 0.9] # red text 
         tempMessage = "Error! Please enter an integer."
         print("Temp Color: ", tempColor)
       else:
@@ -280,7 +280,7 @@ class OneDayParameterWindow(Screen):
         for temperature in temperatures:
           status = -100 <= int(temperatures[temperature]) <= 150
       except:
-        tempColor = (1, 0.1, 0.1, 0.9) # red text
+        tempColor = [1, 0.1, 0.1, 0.9] # red text
         tempMessage = "Error! Input must be in the format ##-##/##-## (e.g. 56-61/45-51)." 
       else:
         tempMessage = ""
@@ -288,11 +288,13 @@ class OneDayParameterWindow(Screen):
 
     # Change the text color and message accordingly with the "orderRank" 
     if orderRank == 1 or orderRank == 2:
-      self.tempMessageOne.color = tempColor
+      for index, value in enumerate(tempColor):
+        self.tempMessageOne.color[index] = tempColor[index]
       self.tempMessageOne.text = tempMessage
     elif orderRank == 3 or orderRank == 4:
-      self.tempMessageTwo.color = tempColor
-      self.tempmessageTwo.text = tempMessage 
+      for index, value in enumerate(tempColor):
+        self.tempMessageTwo.color[index] = tempColor[index]
+      self.tempMessageTwo.text = tempMessage
      
   def boxNumber(self, orderRank):
     if orderRank == 1:
@@ -521,7 +523,7 @@ class ForecastSendApp(App):
 if __name__ == "__main__":
   ForecastSendApp().run()
 
-# You left off at debugging temperature messages. Check the logic of your code.   
+# You left off at debugging temperature messages. Fix the regional messages. Also, add an error message if user tries to input low temp higher than high temp.   
 # Don't forget later when you add the back button to the one-day screen, you will need to "reset" the positions of the attributes!!!
 # You left off at High/Low Temps, and the different scenarios to display it
 # Also don't forget to put an error message IF the forecast does not send
