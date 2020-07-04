@@ -140,6 +140,7 @@ class OneDayParameterWindow(Screen):
   def __init__(self, *args, **kwargs):
     super(OneDayParameterWindow, self).__init__(*args, **kwargs)
     self.drop_down = CustomDropDown()
+    self.temperatures = [0, -999, -999, -999, -999] # stores the values user inputs in each temperature box, used for value comparison 
 
     # create drop down menu of select cities
     dropdown = DropDown() 
@@ -250,6 +251,7 @@ class OneDayParameterWindow(Screen):
     tempType = self.convertTempType(orderRank) 
     tempMessage = ""
     tempColor = []
+    remainder = orderRank % 2 # used to test if orderRank is odd or even; 0 is even, and 1 is odd 
 
     print("Value: ", value)
 
@@ -266,8 +268,20 @@ class OneDayParameterWindow(Screen):
         tempMessage = "Error! Please enter an integer."
         print("Temp Color: ", tempColor)
       else:
-        tempMessage = ""
-        gb.oneTracker[orderRank] = True
+        self.temperatures[orderRank] = int(value) # store value in storage array
+        print("storage array:", self.temperatures) 
+        test = self.isTempStored(orderRank, remainder)
+        print("Does the Storage FUNCTION WORK?!?!", test) 
+
+        # check if there is a value in the other box AND if the low temp is higher than the high temp
+        if self.isTempStored(orderRank, remainder) and self.isLowHigherThanHigh(orderRank, remainder): 
+          # since low temp is higher than the high, display error message
+          tempColor = [1, 0.1, 0.1, 0.9] # red text
+          tempMessage = "Error! The Low temperature cannot be higher than the High temperature."
+          self.temperatures[orderRank] = -999 # "take out" invalid value out of storage
+        else: # correct input
+          tempMessage = ""
+          gb.oneTracker[orderRank] = True
     else:
       # parse the input and check for validity
       try:
@@ -284,7 +298,7 @@ class OneDayParameterWindow(Screen):
         tempMessage = "Error! Input must be in the format ##-##/##-## (e.g. 56-61/45-51)." 
       else:
         tempMessage = ""
-        gb.oneTracker[orderRank] = True 
+        gb.oneTracker[orderRank] = True
 
     # Change the text color and message accordingly with the "orderRank" 
     if orderRank == 1 or orderRank == 2:
@@ -296,6 +310,7 @@ class OneDayParameterWindow(Screen):
         self.tempMessageTwo.color[index] = tempColor[index]
       self.tempMessageTwo.text = tempMessage
      
+  # retrieves the value from where the user inputted (for temperature boxes) 
   def boxNumber(self, orderRank):
     if orderRank == 1:
       return self.boxOne.text
@@ -305,17 +320,46 @@ class OneDayParameterWindow(Screen):
       return self.boxThree.text
     elif orderRank == 4:
       return self.boxFour.text
-  
+
+  # retrieves the correct temperature label (for message prompting user for input) depending on forecast type 
   def convertTempType(self, orderRank):
+    # check which box the user is inputting a value
     if orderRank == 1 or orderRank == 3:
-      if "region" in db.cityType:
+      if "region" in db.cityType: # check if the user is sending a regional forecast (special case) 
         finalString = "High/Low"
       else:
         finalString = "High"
     elif orderRank == 2 or orderRank == 4:
       finalString = "Low" 
 
-    return finalString 
+    return finalString
+
+  # check if the user has inputted a value in the other box (of the corresponding temperature set)
+  def isTempStored(self, orderRank, remainder):
+    if remainder == 0: # even orderRank
+      if self.temperatures[orderRank - 1] != -999:
+        return True
+      else:
+        return False
+    if remainder == 1: # odd orderRank
+      if self.temperatures[orderRank + 1] != -999:
+        return True
+      else:
+        return False
+
+  # checks if the low temperature is higher than the high temperature within a temperature set 
+  def isLowHigherThanHigh(self, orderRank, remainder):
+    if remainder == 0: # even orderRank
+      if self.temperatures[orderRank] > self.temperatures[orderRank - 1]: 
+        return True 
+      else:
+        return False
+    if remainder == 1: # odd orderRank 
+      if self.temperatures[orderRank] < self.temperatures[orderRank + 1]:
+        return True
+      else: 
+        return False 
+
 
 # one-day precipitation: for editing the forecast
 class OneDayEditWindow(Screen):
@@ -523,6 +567,7 @@ class ForecastSendApp(App):
 if __name__ == "__main__":
   ForecastSendApp().run()
 
+# Cool, for the most part, the app successfully checks if low temp is higher than high temp. ONE PROBLEM!!!! What if the user inputs high, low, then changes high??!?!
 # You left off at debugging temperature messages. Fix the regional messages. Also, add an error message if user tries to input low temp higher than high temp.   
 # Don't forget later when you add the back button to the one-day screen, you will need to "reset" the positions of the attributes!!!
 # You left off at High/Low Temps, and the different scenarios to display it
