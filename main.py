@@ -244,16 +244,14 @@ class OneDayParameterWindow(Screen):
         elif remainder is not 0 and status is True: # for input not divisible by 10
           self.popMessage.text = "Error! Please enter an integer divisible by 10."
   
-  # Test
+  # function that gets called when user focuses on temperature box; displays the appropriate message
   def tempMessages(self, orderRank):
     gb.oneTracker[orderRank] = False 
-    value = self.boxNumber(orderRank)  
-    tempType = self.convertTempType(orderRank) 
+    value = self.boxNumber(orderRank) # retrieve value from the correct temperature  
+    tempType = self.convertTempType(orderRank) # display the correct temperature label
     tempMessage = ""
-    tempColor = []
+    tempColor = [] # list containing four values which denote rgba 
     remainder = orderRank % 2 # used to test if orderRank is odd or even; 0 is even, and 1 is odd 
-
-    print("Value: ", value)
 
     # check if user is focusing on textinput for the first time
     if value == "":
@@ -266,12 +264,8 @@ class OneDayParameterWindow(Screen):
         # display error message
         tempColor = [1, 0.1, 0.1, 0.9] # red text 
         tempMessage = "Error! Please enter an integer."
-        print("Temp Color: ", tempColor)
       else:
         self.temperatures[orderRank] = int(value) # store value in storage array
-        print("storage array:", self.temperatures) 
-        test = self.isTempStored(orderRank, remainder)
-        print("Does the Storage FUNCTION WORK?!?!", test) 
 
         # check if there is a value in the other box AND if the low temp is higher than the high temp
         if self.isTempStored(orderRank, remainder) and self.isLowHigherThanHigh(orderRank, remainder): 
@@ -282,23 +276,28 @@ class OneDayParameterWindow(Screen):
         else: # correct input
           tempMessage = ""
           gb.oneTracker[orderRank] = True
-    else:
+    else: # for regional forecasts 
       # parse the input and check for validity
       try:
         high, low = value.split("/")
         highLower, highUpper = high.split("-")
-        lowLower, lowUpper = low.split("-")
-        temperatures = [highLower, highUpper, lowLower, lowUpper] 
+        lowLower, lowUpper = low.split("-") 
+        temperatures = [highLower, highUpper, lowLower, lowUpper]  
 
         # check for integer
         for temperature in temperatures:
-          status = -100 <= int(temperatures[temperature]) <= 150
+          status = -100 <= int(temperature) <= 150
       except:
         tempColor = [1, 0.1, 0.1, 0.9] # red text
         tempMessage = "Error! Input must be in the format ##-##/##-## (e.g. 56-61/45-51)." 
       else:
-        tempMessage = ""
-        gb.oneTracker[orderRank] = True
+        # check if the low temperature is not higher than the highest high temperature
+        if int(temperatures[2]) > int(temperatures[1]) or int(temperatures[3]) > int(temperatures[1]):
+          tempColor = [1, 0.1, 0.1, 0.9] # red text
+          tempMessage = "Error! The Low temperature cannot be higher than the High temperature."
+        else: # correct input 
+          tempMessage = ""
+          gb.oneTracker[orderRank] = True
 
     # Change the text color and message accordingly with the "orderRank" 
     if orderRank == 1 or orderRank == 2:
@@ -567,8 +566,7 @@ class ForecastSendApp(App):
 if __name__ == "__main__":
   ForecastSendApp().run()
 
-# Cool, for the most part, the app successfully checks if low temp is higher than high temp. ONE PROBLEM!!!! What if the user inputs high, low, then changes high??!?!
-# You left off at debugging temperature messages. Fix the regional messages. Also, add an error message if user tries to input low temp higher than high temp.   
+# You left off on precipitation amounts box    
 # Don't forget later when you add the back button to the one-day screen, you will need to "reset" the positions of the attributes!!!
 # You left off at High/Low Temps, and the different scenarios to display it
 # Also don't forget to put an error message IF the forecast does not send
