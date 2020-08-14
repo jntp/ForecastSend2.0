@@ -326,6 +326,7 @@
   name: "one_day_main"
 
   dropDownList: dropDownList
+  dropDownListTwo: dropDownListTwo
   pop: pop
   popMessage: popMessage
   placeOne: placeOne
@@ -344,6 +345,7 @@
   unitFour: unitFour 
   tempMessageOne: tempMessageOne
   tempMessageTwo: tempMessageTwo 
+  popAmt: popAmt
 
   # Set background color to custom color
   canvas.before:
@@ -572,6 +574,32 @@
       size_hint: 0.4, 0.12
       pos_hint: {"x": 0.39, "top": 0.5}
       font_size: (root.width**2 + root.height**2) / 16**4
+
+    Label:
+      text: "Precipitation Amount:"
+      text_size: self.size
+      halign: 'left'
+      valign: 'center' 
+      color: 1, 1, 1, 0.9
+      size_hint: 0.4, 0.12
+      pos_hint: {"x": 0.105, "top": 0.44}
+      font_size: (root.width**2 + root.height**2) / 15**4
+
+    TextInput:
+      text: 
+      id: popAmt
+      size_hint: 0.1, 0.05
+      pos_hint: {"x": 0.44, "top": 0.4}
+      font_size: self.height / 2 
+      multiline: False
+      # on_focus: 
+
+    BoxLayout:
+      id: dropDownListTwo 
+      size_hint: 0.2, 0.12
+      pos_hint: {"x": 0.48, "top": 0.4}
+
+
 
 
 

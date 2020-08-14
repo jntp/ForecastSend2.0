@@ -32,6 +32,10 @@ class SaveText:
   def eventSave(self, eventText):
     self.eventType = eventText
 
+  # for saving unit inputted in precipitation amount drop down menu (one-day window)
+  def unitSave(self, unitText):
+    self.unitType = unitText 
+
 # used to store "global variables and functions"
 class Globals:
   # "recalls" if user wanted to send a one-day forecast
@@ -118,6 +122,7 @@ class CityWindow(Screen):
 # one-day precipitation: main screen for user entering parameters
 class OneDayParameterWindow(Screen):
   dropDownList = ObjectProperty(None)
+  dropDownListTwo = ObjectProperty(None) 
   pop = ObjectProperty(None)
   popMessage = ObjectProperty(None) 
   placeOne = ObjectProperty(None)
@@ -136,6 +141,7 @@ class OneDayParameterWindow(Screen):
   unitFour = ObjectProperty(None)
   tempMessageOne = ObjectProperty(None) 
   tempMessageTwo = ObjectProperty(None) 
+  popAmt = ObjectProperty(None) 
 
   def __init__(self, *args, **kwargs):
     super(OneDayParameterWindow, self).__init__(*args, **kwargs)
@@ -143,7 +149,7 @@ class OneDayParameterWindow(Screen):
     self.temperatures = [0, -999, -999, -999, -999] # stores the values user inputs in each temperature box, used for value comparison 
 
     # create drop down menu of select cities
-    dropdown = DropDown() 
+    dropdown = DropDown()
     events = ["Light Rain", "Moderate Rain", "Heavy Rain", "Thunderstorm", "Wintry Mix", "Sleet", "Freezing Rain", "Flurries", "Snow Showers", \
         "Snow", "Heavy Snow"]
     for event in events:
@@ -157,6 +163,20 @@ class OneDayParameterWindow(Screen):
     mainbutton.bind(on_release = dropdown.open) # show drop down menu when released
     dropdown.bind(on_select = lambda instance, x : setattr(mainbutton, 'text', x)) # assign data to button text
     self.dropDownList.add_widget(mainbutton)
+
+    ## For second drop down menu 
+    dropdownTwo = DropDown() 
+    units = ["in", "ft", "mm", "cm"]
+    for unit in units:
+      btnTwo = Button(text = '%r' % unit, size_hint_y = None, height = 30, pos = (25, 25), on_release = lambda btn : sv.unitSave(btnTwo.text))
+      btnTwo.bind(on_release = lambda btnTwo : dropdown.select(btnTwo.text)) # attach a callback which will pass the text selected as data
+      dropdownTwo.add_widget(btnTwo) 
+
+    # create the main or default button
+    mainbuttonTwo = Button(text = 'Test', size_hint = (0.5, 0.5))
+    mainbuttonTwo.bind(on_release = dropdownTwo.open)
+    dropdownTwo.bind(on_select = lambda instance, x : setattr(mainbuttonTwo, 'text', x)) # assign data to button text
+    self.dropDownListTwo.add_widget(mainbuttonTwo) 
 
   def on_pre_enter(self, *args):
     gb.oneGoodResponses()
@@ -566,8 +586,8 @@ class ForecastSendApp(App):
 if __name__ == "__main__":
   ForecastSendApp().run()
 
-# You left off on precipitation amounts box    
+# You left off on precipitation amounts drop down menu    
+# Fix the problem between the two drop down menus. How come when you select a unit the other drop down menu also changes? 
 # Don't forget later when you add the back button to the one-day screen, you will need to "reset" the positions of the attributes!!!
-# You left off at High/Low Temps, and the different scenarios to display it
 # Also don't forget to put an error message IF the forecast does not send
 # Don't forget to add pop up windows for error messages
