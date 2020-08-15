@@ -164,16 +164,17 @@ class OneDayParameterWindow(Screen):
     dropdown.bind(on_select = lambda instance, x : setattr(mainbutton, 'text', x)) # assign data to button text
     self.dropDownList.add_widget(mainbutton)
 
-    ## For second drop down menu 
+    ## For second drop down menu, for units measuring precipitation amounts  
     dropdownTwo = DropDown() 
     units = ["in", "ft", "mm", "cm"]
     for unit in units:
+      # create button individually for each unit 
       btnTwo = Button(text = '%r' % unit, size_hint_y = None, height = 30, pos = (25, 25), on_release = lambda btn : sv.unitSave(btnTwo.text))
-      btnTwo.bind(on_release = lambda btnTwo : dropdown.select(btnTwo.text)) # attach a callback which will pass the text selected as data
+      btnTwo.bind(on_release = lambda btnTwo : dropdownTwo.select(btnTwo.text)) # attach a callback which will pass the text selected as data
       dropdownTwo.add_widget(btnTwo) 
 
     # create the main or default button
-    mainbuttonTwo = Button(text = 'Test', size_hint = (0.5, 0.5))
+    mainbuttonTwo = Button(text = 'Units', size_hint = (0.5, 0.5))
     mainbuttonTwo.bind(on_release = dropdownTwo.open)
     dropdownTwo.bind(on_select = lambda instance, x : setattr(mainbuttonTwo, 'text', x)) # assign data to button text
     self.dropDownListTwo.add_widget(mainbuttonTwo) 
@@ -586,8 +587,7 @@ class ForecastSendApp(App):
 if __name__ == "__main__":
   ForecastSendApp().run()
 
-# You left off on precipitation amounts drop down menu    
-# Fix the problem between the two drop down menus. How come when you select a unit the other drop down menu also changes? 
+# You left off on precipitation amounts drop down menu, specifically adding the error messages 
 # Don't forget later when you add the back button to the one-day screen, you will need to "reset" the positions of the attributes!!!
 # Also don't forget to put an error message IF the forecast does not send
 # Don't forget to add pop up windows for error messages
